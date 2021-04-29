@@ -9,6 +9,7 @@ public class Plateau {
         this.joueur = joueur;
         this.taille = taille;
         this.plateau = new int[taille][taille];
+        this.plateau[taille/2][taille/2] = 1;
     }
 
     public void printPlateau() {
