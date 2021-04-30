@@ -9,7 +9,7 @@ public class Main {
 
         Affichage fenetre = new Affichage();
         fenetre.initAffichage();
-        fenetre.affichagePlateau(plateau1.taille,plateau1.plateau);
+        fenetre.updateAffichage(plateau1.taille,plateau1.plateau);
         System.out.println("hello");
 
     }
