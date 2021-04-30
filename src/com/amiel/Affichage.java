@@ -44,17 +44,44 @@ public class Affichage {
     public void updatePlateau(int taille, int[][] plateau){
         panel_plateau.setOpaque(true);
         panel_plateau.setBackground(Color.WHITE);
-
+/* notes :
+0 = Vide
+1 = Chateau
+2 = Champs
+3 = Foret
+4 = Mer
+5 = Prairie
+6 = Mine
+7 = Montagne
+ */
         for (int x = 0; x < taille; x++) {
             for (int y = 0; y < taille; y++) {
                 JButton label = new JButton(String.valueOf(x)+";"+String.valueOf(y));
                 label.setOpaque(true);
                 label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 if (plateau[x][y] == 0) { //Vide
-                    label.setBackground(Color.white);
+                    label.setBackground(Color.PINK);
                 }
-                else if (plateau[x][y] == 1) { //chateau
-                    label.setBackground(Color.black);
+                else if (plateau[x][y] == 1) { //Chateau
+                    label.setBackground(Color.BLACK);
+                }
+                else if (plateau[x][y] == 2) { //Champs
+                    label.setBackground(Color.YELLOW);
+                }
+                else if (plateau[x][y] == 3) { //Foret
+                    label.setBackground(Color.GREEN);
+                }
+                else if (plateau[x][y] == 4) { //Mer
+                    label.setBackground(Color.BLUE);
+                }
+                else if (plateau[x][y] == 5) { //Prairie
+                    label.setBackground(Color.ORANGE);
+                }
+                else if (plateau[x][y] == 6) { //Mine
+                    label.setBackground(Color.GRAY);
+                }
+                else if (plateau[x][y] == 7) { //Montagne
+                    label.setBackground(Color.WHITE);
                 }
                 panel_plateau.add(label);
             }
