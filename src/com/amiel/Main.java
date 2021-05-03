@@ -2,15 +2,29 @@ package com.amiel;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
-        Plateau plateau1 = new Plateau(1,9);
-        plateau1.printPlateau();
+        Pioche pioche = new Pioche("dominos.csv");
+        pioche.melangePioche();
+        //pioche.affichePioche();
 
+        int nbJoueurs;
+        boolean commencer = false;
         Affichage fenetre = new Affichage();
         fenetre.initAffichage();
-        fenetre.updateAffichage(plateau1.taille,plateau1.plateau);
+        while (!commencer) {
+            fenetre.afficheAccueil();
+            commencer = fenetre.commencer;
+            nbJoueurs = fenetre.nbJoueurs;
+            System.out.println(nbJoueurs);
+            Thread.sleep(100);
+        }
+        fenetre.initAffichage();
+        Plateau plateau1 = new Plateau(1,9);
         System.out.println("hello");
+
+
+        fenetre.updateAffichage(plateau1.taille,plateau1.plateau);
 
     }
 }
