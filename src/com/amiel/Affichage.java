@@ -22,7 +22,7 @@ public class Affichage {
     GridBagConstraints gbc = new GridBagConstraints();
     JPanel menu = new JPanel();
     JPanel panel_plateau = new JPanel();
-    int nbJoueurs;
+    int nbJoueurs = 2;
     boolean commencer;
 
     public void initAffichage() {
@@ -51,7 +51,7 @@ public class Affichage {
         JButton minus = new JButton("-");
         minus.setPreferredSize(new Dimension(300, 300));
         minus.addActionListener(actionEvent -> {
-            if(nbJoueurs > 0) {
+            if(nbJoueurs > 2) {
                 nbJoueurs--;
             }
             afficheNbJoueurs.setText("nombre de joueurs : " + nbJoueurs);

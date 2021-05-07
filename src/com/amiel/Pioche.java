@@ -33,10 +33,16 @@ public class Pioche {
         Collections.shuffle(this.dominos);
     }
 
-    public void affichePioche(){
-        for (int i=0; i < dominos.size(); i++){
+    public ArrayList<Domino> affichePioche(int nbDominosPioche){
+        melangePioche();
+        ArrayList<Domino> listDomino = new ArrayList<Domino>(nbDominosPioche);
+
+        for (int i=0; i < nbDominosPioche; i++){
             Domino domino = (Domino) dominos.get(i);
             domino.afficheDomino();
+            listDomino.add(domino);
         }
+        return listDomino;
+
     }
 }

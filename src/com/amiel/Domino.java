@@ -33,6 +33,10 @@ public class Domino {
     }
 
     public void afficheDomino(){
-        System.out.println(this.nbCouronne1 + " " + this.type1 + " " + this.nbCouronne1 + " " + this.type1 + " " + this.numeroDomino);
+        System.out.println(this.nbCouronne1 + " " + this.type1 + " " + this.nbCouronne2 + " " + this.type2 + " " + this.numeroDomino);
+    }
+
+    public int getNumeroDomino() {
+        return numeroDomino;
     }
 }
