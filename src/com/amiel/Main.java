@@ -42,7 +42,24 @@ public class Main {
         //tour 1
         //Définir ordre des joueurs
 
-        ArrayList<Integer> listePassage = generateRandomArray(nbJoueurs);
+
+        ArrayList<Integer> maliste = new ArrayList<Integer>();
+        for(int i =1;i<nbJoueurs+1;i++){
+            maliste.add(i);
+        }
+
+        ArrayList<Integer> listePassage = new ArrayList<Integer>();
+        Random rand = new Random();
+
+        do{
+            int next = maliste.get(rand.nextInt(maliste.size()));
+            maliste.remove(maliste.indexOf(next));
+            listePassage.add(next);
+            //System.out.println("next : " + next);
+            //System.out.println("maliste : "+maliste);
+            //System.out.println("listePassage : "+listePassage);
+        }while (maliste.size()!=0);
+
 
         //Piocher les dominos
 
@@ -53,11 +70,15 @@ public class Main {
         //chaque joueur choisi son premier domino
 
         for (int i=0; i<nbJoueurs;i++){
+            //Problème d'indexation ça me casse les couilles
+            //J'arrive pas a trouver y'a moyen que ça soit la formule du dessous
+
             listeJoueurs[listePassage.get(i)].chooseDomino(listDomino);
         }
 
-        //fenetre.initAffichage();
-        //fenetre.updateAffichage(listeJoueurs[0].plateau.taille,listeJoueurs[0].plateau.plateau);
+
+        fenetre.initAffichage();
+        fenetre.updateAffichage(listeJoueurs[0].plateau.taille,listeJoueurs[0].plateau.plateau);
 
         // autres tours
 

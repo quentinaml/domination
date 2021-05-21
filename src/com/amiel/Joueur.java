@@ -24,7 +24,7 @@ public class Joueur {
     public int chooseDomino(ArrayList<Domino> listDomino){
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Veuillez saisir le premier domino");
+        System.out.println("Veuillez choisir un domino");
         int domino = scanner.nextInt();
         System.out.println(domino);
         return domino;
