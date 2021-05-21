@@ -17,21 +17,6 @@ public class Domino {
         this.numeroDomino = numeroDomino;
     }
 
-    public int[] melangeDomino(int[] arrayDomino){
-        for(int position=arrayDomino.length-1; position>=1; position--){
-
-
-            var hasard= (int)Math.floor(Math.random()*(position+1));
-
-
-            var sauve=arrayDomino[position];
-            arrayDomino[position]=arrayDomino[hasard];
-            arrayDomino[hasard]=sauve;
-
-        }
-        return arrayDomino;
-    }
-
     public void afficheDomino(){
         System.out.println(this.nbCouronne1 + " " + this.type1 + " " + this.nbCouronne2 + " " + this.type2 + " " + this.numeroDomino);
     }
