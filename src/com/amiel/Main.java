@@ -7,9 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
-        int nbJoueurs=0;
+        int nbJoueurs = 0;
         boolean commencer = false;
         Affichage fenetre = new Affichage();
         fenetre.initAffichage();
@@ -22,31 +22,35 @@ public class Main {
 
         Joueur[] listeJoueurs = new Joueur[nbJoueurs];
 
-        for (int i = 1; i < nbJoueurs+1; i++){
-            listeJoueurs[i-1] = new Joueur("Joueur" + i);
+        for (int i = 1; i < nbJoueurs + 1; i++) {
+            listeJoueurs[i - 1] = new Joueur("Joueur" + i);
         }
-
+        //établissement des règles
         Pioche pioche = new Pioche("dominos.csv");
         pioche.melangePioche();
-        if(nbJoueurs == 2){
-            for (int i=0; i<24; i++){
+        int nbRoi = 1;
+
+        //retire le nombre de carte en fonction du nombre de joueur
+        if (nbJoueurs == 2) {
+            for (int i = 0; i < 24; i++) {
+                pioche.dominos.remove(0);
+            }
+            nbRoi = 2;
+        } else if (nbJoueurs == 3) {
+            for (int i = 0; i < 12; i++) {
                 pioche.dominos.remove(0);
             }
         }
-        else if(nbJoueurs == 3){
-            for (int i=0; i<12; i++){
-                pioche.dominos.remove(0);
+
+        ArrayList<Integer> maliste = new ArrayList<Integer>();
+        for (int i = 0 ; i < nbRoi; i++) {
+            for (int j = 1; j < nbJoueurs + 1; j++) {
+                maliste.add(j);
             }
         }
 
         //tour 1
         //Définir ordre des joueurs
-
-
-        ArrayList<Integer> maliste = new ArrayList<Integer>();
-        for(int i =1;i<nbJoueurs+1;i++){
-            maliste.add(i);
-        }
 
         ArrayList<Integer> listePassage = new ArrayList<Integer>();
         Random rand = new Random();
@@ -60,20 +64,19 @@ public class Main {
             //System.out.println("listePassage : "+listePassage);
         }while (maliste.size()!=0);
 
-
         //Piocher les dominos
 
-        ArrayList<Domino> listDomino = pioche.affichePioche(nbJoueurs);
-        System.out.println(listDomino);
+        ArrayList<Domino> listeDomino = pioche.affichePioche(nbJoueurs * nbRoi);
+        System.out.println(listeDomino);
         System.out.println(listePassage);
 
         //chaque joueur choisi son premier domino
 
-        for (int i=0; i<nbJoueurs;i++){
-            //Problème d'indexation ça me casse les couilles
-            //J'arrive pas a trouver y'a moyen que ça soit la formule du dessous
+        for (int i=0; i < nbJoueurs * nbRoi;i++){
 
-            listeJoueurs[listePassage.get(i)].chooseDomino(listDomino);
+            listeJoueurs[listePassage.get(i) -1].chooseDomino(listeDomino);
+            upadteListePlateau(listeJoueurs[listePassage.get(i) -1].getListeDominosChoisi().get(0));
+
         }
 
 
@@ -85,13 +88,13 @@ public class Main {
     }
 
     private static ArrayList<Integer> generateRandomArray(int n) {
-        ArrayList<Integer> list = new ArrayList<Integer>(n);
+        ArrayList<Integer> liste = new ArrayList<Integer>(n);
         Random random = new Random();
 
         for (int i = 0; i < n; i++)
         {
-            list.add(random.nextInt(n));
+            liste.add(random.nextInt(n));
         }
-        return list;
+        return liste;
     }
 }

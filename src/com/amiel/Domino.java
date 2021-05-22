@@ -1,7 +1,5 @@
 package com.amiel;
 
-import java.util.*;
-
 public class Domino {
     public int nbCouronne1;
     public String type1;
@@ -17,9 +15,13 @@ public class Domino {
         this.numeroDomino = numeroDomino;
     }
 
-    public void afficheDomino(){
+    public boolean afficheDomino(){
         System.out.println(this.nbCouronne1 + " " + this.type1 + " " + this.nbCouronne2 + " " + this.type2 + " " + this.numeroDomino);
+        return false;
     }
+
+    public String getType1(){return this.type1;}
+    public String getType2(){return this.type2;}
 
     public int getNumeroDomino() {
         return numeroDomino;
