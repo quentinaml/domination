@@ -1,5 +1,7 @@
 package com.amiel;
 
+import java.awt.*;
+
 public class Domino {
     public int nbCouronne1;
     public String type1;
@@ -16,14 +18,32 @@ public class Domino {
     }
 
     public boolean afficheDomino(){
-        System.out.println(this.nbCouronne1 + " " + this.type1 + " " + this.nbCouronne2 + " " + this.type2 + " " + this.numeroDomino);
+        System.out.println(this.nbCouronne1 + " Paysage :" + ConvertTypeToInt(this.type1) + " " + this.nbCouronne2 + "  Paysage :" + ConvertTypeToInt(this.type2) + " " + this.numeroDomino);
         return false;
     }
 
-    public String getType1(){return this.type1;}
-    public String getType2(){return this.type2;}
+    public boolean afficheNumeroDomino(){
+        System.out.println(this.numeroDomino);
+        return false;
+    }
+
+    public int ConvertTypeToInt(String type){
+
+        return switch (type) {
+            case "Chateau" -> 1;
+            case "Champs" -> 2;
+            case "Foret" -> 3;
+            case "Mer" -> 4;
+            case "Prairie" -> 5;
+            case "Mine" -> 6;
+            case "Montagne" -> 7;
+            default -> 0;
+        };
+    }
+    public int getType1(){return ConvertTypeToInt(this.type1);}
+    public int getType2(){return ConvertTypeToInt(this.type2);}
 
     public int getNumeroDomino() {
-        return numeroDomino;
+        return this.numeroDomino;
     }
 }

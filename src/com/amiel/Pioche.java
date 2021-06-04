@@ -33,13 +33,12 @@ public class Pioche {
         Collections.shuffle(this.dominos);
     }
 
-    public ArrayList<Domino> affichePioche(int nbDominosPioche){
+    public ArrayList<Domino> nouvellePiocheDuTour (int nbDominosPioche){
         melangePioche();
         ArrayList<Domino> listeDomino = new ArrayList<Domino>(nbDominosPioche);
 
         for (int i=0; i < nbDominosPioche; i++){
             Domino domino = (Domino) dominos.get(i);
-            domino.afficheDomino();
             listeDomino.add(domino);
         }
         return listeDomino;

@@ -1,9 +1,9 @@
 package com.amiel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
+
+import static java.util.Arrays.*;
+
 
 public class Main {
 
@@ -28,54 +28,33 @@ public class Main {
         //établissement des règles
         Pioche pioche = new Pioche("dominos.csv");
         pioche.melangePioche();
-        int nbRoi = 1;
 
         //retire le nombre de carte en fonction du nombre de joueur
         if (nbJoueurs == 2) {
             for (int i = 0; i < 24; i++) {
                 pioche.dominos.remove(0);
             }
-            nbRoi = 2;
         } else if (nbJoueurs == 3) {
             for (int i = 0; i < 12; i++) {
                 pioche.dominos.remove(0);
             }
         }
 
-        ArrayList<Integer> maliste = new ArrayList<Integer>();
-        for (int i = 0 ; i < nbRoi; i++) {
-            for (int j = 1; j < nbJoueurs + 1; j++) {
-                maliste.add(j);
-            }
-        }
+        ArrayList<King> listeKing = creerListeKing(nbJoueurs);
 
         //tour 1
         //Définir ordre des joueurs
 
-        ArrayList<Integer> listePassage = new ArrayList<Integer>();
-        Random rand = new Random();
-
-        do{
-            int next = maliste.get(rand.nextInt(maliste.size()));
-            maliste.remove(maliste.indexOf(next));
-            listePassage.add(next);
-            //System.out.println("next : " + next);
-            //System.out.println("maliste : "+maliste);
-            //System.out.println("listePassage : "+listePassage);
-        }while (maliste.size()!=0);
+        Joueur[] listePassage = creerListePassage(nbJoueurs, listeJoueurs);
 
         //Piocher les dominos
-
-        ArrayList<Domino> listeDomino = pioche.affichePioche(nbJoueurs * nbRoi);
-        System.out.println(listeDomino);
-        System.out.println(listePassage);
+        ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
 
         //chaque joueur choisi son premier domino
-
-        for (int i=0; i < nbJoueurs * nbRoi;i++){
-
-            listeJoueurs[listePassage.get(i) -1].chooseDomino(listeDomino);
-            upadteListePlateau(listeJoueurs[listePassage.get(i) -1].getListeDominosChoisi().get(0));
+        for (Joueur joueur : listePassage) {
+            afficheNomsDominoDansListe(piocheDuTour);
+            System.out.println(joueur.name);
+            piocheDuTour = joueur.chooseDomino(piocheDuTour, true);
 
         }
 
@@ -96,5 +75,51 @@ public class Main {
             liste.add(random.nextInt(n));
         }
         return liste;
+    }
+
+    public static ArrayList<King> creerListeKing(int nbJoueurs){
+        ArrayList<King> listeKing = new ArrayList<King>(3);
+        if (nbJoueurs == 2){
+            listeKing.add(new King("rouge"));
+            listeKing.add(new King("rouge"));
+            listeKing.add(new King("bleu"));
+            listeKing.add(new King("bleu"));
+        } else if (nbJoueurs == 3){
+            listeKing.add(new King("rouge"));
+            listeKing.add(new King("bleu"));
+            listeKing.add(new King("vert"));
+        }
+        else if (nbJoueurs == 4) {
+            listeKing.add(new King("rouge"));
+            listeKing.add(new King("bleu"));
+            listeKing.add(new King("vert"));
+            listeKing.add(new King("jaune"));
+        }
+        return listeKing;
+    }
+
+    public static Joueur[] creerListePassage(int nbJoueurs, Joueur[] listeJoueurs){
+        Joueur[] listePassage = new Joueur[4];
+        if( nbJoueurs == 3){
+            listePassage = new Joueur[3];
+        }
+
+        for ( int i = 0; i < nbJoueurs; i++){
+            listePassage[i] = listeJoueurs[i];
+            if(nbJoueurs == 2){
+                listePassage[i+2] = listeJoueurs[i];
+            }
+        }
+        Collections.shuffle(asList(listePassage));
+        for (int i = 0; i < listePassage.length; i++){
+            System.out.println(listePassage[i].name);
+        }
+        return listePassage;
+    }
+
+    public static void afficheNomsDominoDansListe (ArrayList<Domino> piocheDuTour){
+        for (int i = 0; i < piocheDuTour.size();i++) {
+            System.out.println(piocheDuTour.get(i).getNumeroDomino());
+        }
     }
 }
