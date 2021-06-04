@@ -71,8 +71,8 @@ public class Joueur {
             regleVerifie = verifierRegles(coordx, coordy, coordx2, coordy2, domino.getType2(), domino.getType1(),premierTour);
 
         } while (!regleVerifie);
-        plateau.plateau[coordx2][coordy2] = domino.getType2();
-        plateau.plateau[coordx][coordy] = domino.getType1();
+        plateau.plateau[coordy2][coordx2] = domino.getType2();
+        plateau.plateau[coordy][coordx] = domino.getType1();
         plateau.printPlateau();
 
     }
