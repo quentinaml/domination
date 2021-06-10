@@ -42,10 +42,10 @@ public class Main {
 
         ArrayList<King> listeKing = creerListeKing(nbJoueurs);
 
-        //tour 1
+        //TOUR 1
         //Définir ordre des joueurs
 
-        Joueur[] listePassage = creerListePassage(nbJoueurs, listeJoueurs);
+        Joueur[] listePassage = creerListePassage(nbJoueurs, listeJoueurs, true);
 
         //Piocher les dominos
         ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
@@ -57,12 +57,64 @@ public class Main {
             piocheDuTour = joueur.chooseDomino(piocheDuTour, true);
 
         }
+        //FIN TOUR 1
+        // autres tours
+
+        //while (!pioche.dominos.isEmpty()){
+            //Piocher les dominos
+            piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
+
+            //liste de passage des joueurs
+            listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
+            listePassage[0] = listeJoueurs[0];
+            System.out.println(listePassage);
+            for (int i = 1; i < listeJoueurs.length; i++){
+                int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1 ).getNumeroDomino();
+                listePassage[i] = listeJoueurs[i];
+                int j = i;
+                while(numeroDernierDomino < listeJoueurs[j-1].listeDominosChoisi.get(listeJoueurs[j-1].listeDominosChoisi.size() - 1 ).getNumeroDomino() ) {
+                    Joueur copie = listePassage[j - 1];
+                    listePassage[j - 1] = listeJoueurs[i];
+                    listePassage[j] = copie;
+                    if (j == 1){
+                        break;
+                    }
+                    else{
+                        j--;
+                    }
+                }
+            }
+            for (int i = 0; i < listePassage.length; i++){
+                System.out.println(listePassage[i].name);
+            }
+            /*for (Joueur joueur : listeJoueurs){
+                int numeroDernierDomino = joueur.listeDominosChoisi.get(joueur.listeDominosChoisi.size()-1).getNumeroDomino();
+                if( listePassage.length == 0 ){
+                    listePassage[0] = joueur;
+                }
+                else {
+                    for (int i = 0; i < listePassage.length; i++) {
+                        if (listePassage[i] == null || numeroDernierDomino > listePassage[i].listeDominosChoisi.get( listePassage[i].listeDominosChoisi.size() - 1).getNumeroDomino()) {
+                            for (int j = listePassage.length - 1; i < j; j--) {
+                                listePassage[j] = listePassage[j - 1];
+                                System.out.println(listePassage);
+                            }
+                            listePassage[i] = joueur;
+                        }
+                    }
+                }
+                System.out.println("Voici l'ordre de passage :");
+                for (int i = 0; i < listePassage.length; i++){
+                    System.out.println(listePassage[i].name);
+                }
+            }*/
+
+
 
 
         fenetre.initAffichage();
         fenetre.updateAffichage(listeJoueurs[0].plateau.taille,listeJoueurs[0].plateau.plateau);
 
-        // autres tours
 
     }
 
@@ -98,21 +150,24 @@ public class Main {
         return listeKing;
     }
 
-    public static Joueur[] creerListePassage(int nbJoueurs, Joueur[] listeJoueurs){
+    public static Joueur[] creerListePassage(int nbJoueurs, Joueur[] listeJoueurs, boolean premierTour){
         Joueur[] listePassage = new Joueur[4];
         if( nbJoueurs == 3){
             listePassage = new Joueur[3];
         }
 
-        for ( int i = 0; i < nbJoueurs; i++){
-            listePassage[i] = listeJoueurs[i];
-            if(nbJoueurs == 2){
-                listePassage[i+2] = listeJoueurs[i];
+        if(premierTour){
+            for ( int i = 0; i < nbJoueurs; i++){
+                listePassage[i] = listeJoueurs[i];
+                if(nbJoueurs == 2){
+                    listePassage[i+2] = listeJoueurs[i];
+                }
             }
-        }
-        Collections.shuffle(asList(listePassage));
-        for (int i = 0; i < listePassage.length; i++){
-            System.out.println(listePassage[i].name);
+            Collections.shuffle(asList(listePassage));
+            System.out.println("Voici l'ordre de passage :");
+            for (int i = 0; i < listePassage.length; i++){
+                System.out.println(listePassage[i].name);
+            }
         }
         return listePassage;
     }

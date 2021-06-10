@@ -41,11 +41,12 @@ public class Joueur {
             }
         } while (!dansDominoListe);
         updateListePlateau(listeDomino.get(numeroDomino), premierTour);
+        listeDominosChoisi.add(listeDomino.get(numeroDomino));
         listeDomino.remove(numeroDomino);
         return listeDomino;
     }
 
-    public ArrayList<Domino> chooseDomino(ArrayList<Domino> listeDomino){
+    public ArrayList<Domino> chooseDomino(ArrayList<Domino> listeDomino ){
         return chooseDomino(listeDomino, false );
     }
 
@@ -86,7 +87,9 @@ public class Joueur {
             }else {
                 return verifierCaseNonUtilisee(coordx, coordy) &&
                         verifierCaseNonUtilisee(coordx2, coordy2) &&
-                        coteACote(coordx, coordy, coordx2, coordy2);
+                        coteACote(coordx, coordy, coordx2, coordy2) &&
+                        tailleMax(coordx, coordy) &&
+                        tailleMax(coordx2, coordy2);
             }
         }
         return false;
@@ -135,4 +138,38 @@ public class Joueur {
         }
         return Math.abs(coordx-coordx2) == 1 ^ Math.abs(coordy-coordy2) == 1;
     }
+
+    public boolean tailleMax (int coordx, int coordy){
+        // coté gauche x
+        int plusLoinGauche = coordx;
+        int plusLoinDroite = coordx;
+        for(var x = 1; x <= coordx; x++){
+            if(plateau.plateau[coordx-x][coordy] != 0 ){
+                plusLoinGauche = coordx - x;
+            }
+        }
+        // coté droit x
+        for(var x = coordx + 1; x >= plateau.taille-1; x++){
+            if(plateau.plateau[x][coordy] != 0 ){
+                plusLoinDroite = x;
+            }
+        }
+        // coté haut y
+        int plusLoinHaut = coordy;
+        int plusLoinBas = coordy;
+        for(var y = 1; y <= coordy; y++){
+            if(plateau.plateau[coordx][coordy-y] != 0 ){
+                plusLoinHaut = coordy - y;
+            }
+        }
+
+        //coté bas y
+        for(var y = coordy + 1; y >= plateau.taille-1; y++){
+            if(plateau.plateau[coordx][y] !=  0 ){
+                plusLoinBas = y ;
+            }
+        }
+        return (plusLoinDroite - plusLoinGauche <= 5) && (plusLoinHaut - plusLoinBas <= 5);
+    }
 }
+
