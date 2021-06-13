@@ -80,7 +80,7 @@ public class Main {
         //FIN TOUR 1
         // autres tours
 
-        //while (!pioche.dominos.isEmpty()){
+        while (!pioche.dominos.isEmpty()) {
             //Piocher les dominos
             piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
 
@@ -88,44 +88,43 @@ public class Main {
             listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
             listePassage[0] = listeJoueurs[0];
             System.out.println(listePassage);
-            for (int i = 1; i < listeJoueurs.length; i++){
-                int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1 ).getNumeroDomino();
+            for (int i = 1; i < listeJoueurs.length; i++) {
+                int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1).getNumeroDomino();
                 listePassage[i] = listeJoueurs[i];
                 int j = i;
-                while(numeroDernierDomino < listeJoueurs[j-1].listeDominosChoisi.get(listeJoueurs[j-1].listeDominosChoisi.size() - 1 ).getNumeroDomino() ) {
+                while (numeroDernierDomino < listeJoueurs[j - 1].listeDominosChoisi.get(listeJoueurs[j - 1].listeDominosChoisi.size() - 1).getNumeroDomino()) {
                     Joueur copie = listePassage[j - 1];
                     listePassage[j - 1] = listeJoueurs[i];
                     listePassage[j] = copie;
-                    if (j == 1){
+                    if (j == 1) {
                         break;
-                    }
-                    else{
+                    } else {
                         j--;
                     }
                 }
             }
-            for (int i = 0; i < listePassage.length; i++){
+            for (int i = 0; i < listePassage.length; i++) {
                 System.out.println(listePassage[i].name);
             }
             for (Joueur joueur : listePassage) {
                 afficheNomsDominoDansListe(piocheDuTour);
                 System.out.println(joueur.name);
                 fenetre.updateAffichage(joueur, piocheDuTour);
-                while(!fenetre.commencer){
+                while (!fenetre.commencer) {
                     Thread.sleep(100);
                 }
                 fenetre.updateAffichage(joueur, piocheDuTour);
                 fenetre.coordx = -1;
                 fenetre.coordx2 = -1;
                 fenetre.nbClique = 0;
-                while(!joueur.regleVerifie) {
+                while (!joueur.regleVerifie) {
 
                     while (fenetre.nbClique != 2) {
 
                         Thread.sleep(100);
                     }
                     joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-                    if(!joueur.regleVerifie){
+                    if (!joueur.regleVerifie) {
                         fenetre.nbClique = 0;
                     }
                 }
@@ -134,6 +133,7 @@ public class Main {
                 fenetre.refresh();
 
             }
+        }
             /*for (Joueur joueur : listeJoueurs){
                 int numeroDernierDomino = joueur.listeDominosChoisi.get(joueur.listeDominosChoisi.size()-1).getNumeroDomino();
                 if( listePassage.length == 0 ){
