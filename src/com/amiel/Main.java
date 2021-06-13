@@ -10,15 +10,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         int nbJoueurs = 0;
-        boolean commencer = false;
         Affichage fenetre = new Affichage();
         fenetre.initAffichage();
-        while (!commencer) {
-            fenetre.afficheAccueil();
-            commencer = fenetre.commencer;
+        fenetre.afficheAccueil();
+        while (!fenetre.commencer) {
             nbJoueurs = fenetre.nbJoueurs;
             Thread.sleep(100);
         }
+        fenetre.frame.dispose();
 
         Joueur[] listeJoueurs = new Joueur[nbJoueurs];
 
@@ -49,12 +48,33 @@ public class Main {
 
         //Piocher les dominos
         ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
-
+        fenetre.initAffichage();
         //chaque joueur choisi son premier domino
         for (Joueur joueur : listePassage) {
             afficheNomsDominoDansListe(piocheDuTour);
             System.out.println(joueur.name);
-            piocheDuTour = joueur.chooseDomino(piocheDuTour, true);
+            fenetre.updateAffichage(joueur, piocheDuTour);
+            while(!fenetre.commencer){
+                Thread.sleep(100);
+            }
+            fenetre.updateAffichage(joueur, piocheDuTour);
+            fenetre.coordx = -1;
+            fenetre.coordx2 = -1;
+            fenetre.nbClique = 0;
+            while(!joueur.regleVerifie) {
+
+                while (fenetre.nbClique != 2) {
+
+                    Thread.sleep(100);
+                }
+                joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+                if(!joueur.regleVerifie){
+                    fenetre.nbClique = 0;
+                }
+            }
+            piocheDuTour = joueur.chooseDomino(piocheDuTour, fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+            joueur.regleVerifie = false;
+            fenetre.refresh();
 
         }
         //FIN TOUR 1
@@ -112,8 +132,7 @@ public class Main {
 
 
 
-        fenetre.initAffichage();
-        fenetre.updateAffichage(listeJoueurs[0].plateau.taille,listeJoueurs[0].plateau.plateau);
+
 
 
     }

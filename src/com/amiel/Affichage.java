@@ -3,6 +3,7 @@ package com.amiel;
 import javax.swing.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 /* notes :
@@ -24,7 +25,23 @@ public class Affichage {
     JPanel panel_plateau = new JPanel();
     int nbJoueurs = 2;
     boolean commencer;
+    Domino dominoChoisi;
+    int numeroDominoChoisi = 0;
+    int nbClique = 0;
+    int coordx = -1;
+    int coordy = -1;
+    int coordx2 = -1;
+    int coordy2 = -1;
 
+    public void refresh(){
+        menu.removeAll();
+        panel_plateau.removeAll();
+        coordx = -1;
+        coordx2 = -1;
+        nbClique = 0;
+        commencer = false;
+        numeroDominoChoisi = 0;
+    }
     public void initAffichage() {
         frame = new JFrame("jeu en cours");
         frame.setSize(new Dimension(1500, 900));
@@ -32,6 +49,9 @@ public class Affichage {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+        commencer = false;
+        numeroDominoChoisi = 0;
+        nbClique = 0;
     }
 
     public void afficheAccueil(){
@@ -71,7 +91,6 @@ public class Affichage {
         buttonCommencer.setPreferredSize(new Dimension(1500, 300));
         buttonCommencer.addActionListener(actionEvent -> {
             if(nbJoueurs > 1) {
-                frame.dispose();
                 commencer = true;
             }
 
@@ -86,7 +105,7 @@ public class Affichage {
         frame.setVisible(true);
     }
 
-    public void updateMenu(){
+    public void updateMenu(Joueur joueur, ArrayList<Domino> piocheDuTour){
         menu.setOpaque(true);
         menu.setBackground(Color.BLACK);
         gbc.gridx = 0;
@@ -94,60 +113,109 @@ public class Affichage {
         gbc.gridheight = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
+        JTextArea afficheDomino = new JTextArea("");
+        if(numeroDominoChoisi == 0){
+            JLabel afficheTour = new JLabel(joueur.name + " : choisis un domino ");
+            afficheTour.setForeground(Color.WHITE);
+            menu.add(afficheTour);
+
+            for (int x = 0; x < piocheDuTour.size(); x++) {
+                JButton label = new JButton(String.valueOf(piocheDuTour.get(x).numeroDomino));
+                label.setOpaque(true);
+                label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                label.setBackground(Color.WHITE);
+                label.setPreferredSize(new Dimension(50, 50));
+                int finalX = x;
+                label.addActionListener(actionEvent -> {
+                    dominoChoisi = piocheDuTour.get(finalX);
+                    numeroDominoChoisi = dominoChoisi.numeroDomino;
+                    commencer = true;
+                });
+                menu.add(label);
+            }
+            menu.add(afficheDomino);
+
+        }
+        else{
+            menu.remove(piocheDuTour.size()+1);
+            menu.repaint();
+            afficheDomino.setText("Votre domino  est :\nnombre de couronne1 : " + dominoChoisi.nbCouronne2 + " \ntype1 :" + dominoChoisi.type1 + " \nnombre de couronne2 : " + dominoChoisi.nbCouronne2 + " \ntype 2 : " + dominoChoisi.type2 + " \nnumero du domino : " + dominoChoisi.numeroDomino);
+            menu.add(afficheDomino);
+            JTextArea instruction = new JTextArea("Cliquez sur la première case\nou vous voulez placer votre\ndomino, puis sur la deuxieme");
+            menu.add(instruction);
+        }
+        menu.setLayout(new GridLayout(4, 2));
+
     }
 
     public void updatePlateau(int taille, int[][] plateau){
-        panel_plateau.setOpaque(true);
-        panel_plateau.setBackground(Color.WHITE);
 
-        for (int x = 0; x < taille; x++) {
-            for (int y = 0; y < taille; y++) {
-                JButton label = new JButton(x+";"+y);
-                label.setOpaque(true);
-                label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                if (plateau[x][y] == 0) { //Vide
-                    label.setBackground(Color.PINK);
+            panel_plateau.setOpaque(true);
+            panel_plateau.setBackground(Color.WHITE);
+            if(numeroDominoChoisi == 0) {
+                for (int x = 0; x < taille; x++) {
+                    for (int y = 0; y < taille; y++) {
+                        JButton label = new JButton(x + ";" + y);
+                        label.setOpaque(true);
+                        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        if (plateau[x][y] == 0) { //Vide
+                            label.setBackground(Color.PINK);
+                            label.setText("vide");
+                        } else if (plateau[x][y] == 1) { //Chateau
+                            label.setBackground(Color.BLACK);
+                            label.setText("Chateau");
+                        } else if (plateau[x][y] == 2) { //Champs
+                            label.setBackground(Color.YELLOW);
+                            label.setText("Champs");
+                        } else if (plateau[x][y] == 3) { //Foret
+                            label.setBackground(Color.GREEN);
+                            label.setText("Foret");
+                        } else if (plateau[x][y] == 4) { //Mer
+                            label.setBackground(Color.BLUE);
+                            label.setText("Mer");
+                        } else if (plateau[x][y] == 5) { //Prairie
+                            label.setBackground(Color.ORANGE);
+                            label.setText("Prairie");
+                        } else if (plateau[x][y] == 6) { //Mine
+                            label.setBackground(Color.GRAY);
+                            label.setText("Mine");
+                        } else if (plateau[x][y] == 7) { //Montagne
+                            label.setBackground(Color.WHITE);
+                            label.setText("Montagne");
+                        }
+                        int finalX = x;
+                        int finalY = y;
+                        label.addActionListener(actionEvent -> {
+                            if(nbClique == 0) {
+                                coordx = finalY;
+                                coordy = finalX;
+                            }
+                            else if(nbClique == 1){
+                                coordx2 = finalY;
+                                coordy2 = finalX;
+                            }
+                            nbClique++;
+                        });
+                        panel_plateau.add(label);
+                    }
                 }
-                else if (plateau[x][y] == 1) { //Chateau
-                    label.setBackground(Color.BLACK);
-                }
-                else if (plateau[x][y] == 2) { //Champs
-                    label.setBackground(Color.YELLOW);
-                }
-                else if (plateau[x][y] == 3) { //Foret
-                    label.setBackground(Color.GREEN);
-                }
-                else if (plateau[x][y] == 4) { //Mer
-                    label.setBackground(Color.BLUE);
-                }
-                else if (plateau[x][y] == 5) { //Prairie
-                    label.setBackground(Color.ORANGE);
-                }
-                else if (plateau[x][y] == 6) { //Mine
-                    label.setBackground(Color.GRAY);
-                }
-                else if (plateau[x][y] == 7) { //Montagne
-                    label.setBackground(Color.WHITE);
-                }
-                panel_plateau.add(label);
             }
-        }
-        panel_plateau.setLayout(new GridLayout(9,9));
-        gbc.gridx = 1;
-        gbc.gridwidth = 5;
-        gbc.gridheight = 1;
-        gbc.gridy = 0;
+            panel_plateau.setLayout(new GridLayout(9, 9));
+            gbc.gridx = 1;
+            gbc.gridwidth = 5;
+            gbc.gridheight = 1;
+            gbc.gridy = 0;
+      //  }
     }
 
-    public void updateAffichage(int taille, int[][] plateau){
+    public void updateAffichage(Joueur joueur, ArrayList<Domino> piocheDuTour){
         frame.setLayout(new GridBagLayout());
         frame.setVisible(true);
         gbc.weightx = 6;
         gbc.weighty = 1;
-        updateMenu();
+        updateMenu(joueur, piocheDuTour);
         frame.add(menu, gbc);
-
-        updatePlateau(taille, plateau);
+        updatePlateau(joueur.plateau.taille, joueur.plateau.plateau);
         frame.add(panel_plateau, gbc);
         frame.setVisible(true);
 
