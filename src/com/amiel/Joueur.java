@@ -51,7 +51,7 @@ public class Joueur {
 
         plateau.printPlateau();
         domino.afficheDomino();
-        //Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez choisir les coordonnées haut");
         //coordx = scanner.nextInt();
         //coordy = scanner.nextInt();
@@ -60,13 +60,18 @@ public class Joueur {
         System.out.println("Veuillez choisir les coordonnées bas");
         //coordx2 = scanner.nextInt();
         //coordy2 = scanner.nextInt();
-        regleVerifie = verifierRegles(coordx, coordy, coordx2, coordy2, domino.getType1(), domino.getType2());
-        if(regleVerifie) {
-            plateau.plateau[coordy2][coordx2] = domino.getType2();
-            plateau.plateau[coordy][coordx] = domino.getType1();
-            plateau.printPlateau();
-            premierTour = false;
+        System.out.println("Défausser la carte ? O/N");
+        String defauce = scanner.toString();
+        if(!defauce.equals("O")){
+            regleVerifie = verifierRegles(coordx, coordy, coordx2, coordy2, domino.getType1(), domino.getType2());
+            if(regleVerifie) {
+                plateau.plateau[coordy2][coordx2] = domino.getType2();
+                plateau.plateau[coordy][coordx] = domino.getType1();
+                plateau.printPlateau();
+                premierTour = false;
+            }
         }
+
 
     }
 
@@ -168,6 +173,17 @@ public class Joueur {
             }
         }
         return (plusLoinDroite - plusLoinGauche <= 5) && (plusLoinHaut - plusLoinBas <= 5);
+    }
+
+    public void compteScore(){
+        //compte couronnes
+        for (Domino domino : listeDominosChoisi){
+            score += domino.getnbCouronne2();
+            score += domino.getnbCouronne();
+
+        }
+
+
     }
 }
 

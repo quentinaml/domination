@@ -25,6 +25,7 @@ public class Affichage {
     JPanel panel_plateau = new JPanel();
     int nbJoueurs = 2;
     boolean commencer;
+    boolean defaussage;
     Domino dominoChoisi;
     int numeroDominoChoisi = 0;
     int nbClique = 0;
@@ -52,6 +53,7 @@ public class Affichage {
         commencer = false;
         numeroDominoChoisi = 0;
         nbClique = 0;
+        defaussage = false;
     }
 
     public void afficheAccueil(){
@@ -143,6 +145,18 @@ public class Affichage {
             menu.add(afficheDomino);
             JTextArea instruction = new JTextArea("Cliquez sur la première case\nou vous voulez placer votre\ndomino, puis sur la deuxieme");
             menu.add(instruction);
+
+            //défaussage
+            JButton defausse = new JButton("Défausser la carte");
+            defausse.setOpaque(true);
+            defausse.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            defausse.setBackground(Color.WHITE);
+            defausse.setPreferredSize(new Dimension(50, 50));
+            defausse.addActionListener(actionEvent -> {
+                numeroDominoChoisi = dominoChoisi.numeroDomino;
+                defaussage = true;
+            });
+            menu.add(defausse);
         }
         menu.setLayout(new GridLayout(4, 2));
 

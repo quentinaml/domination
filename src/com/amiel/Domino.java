@@ -43,7 +43,10 @@ public class Domino {
     public int getType1(){return ConvertTypeToInt(this.type1);}
     public int getType2(){return ConvertTypeToInt(this.type2);}
 
-    public int getNumeroDomino() {
-        return this.numeroDomino;
+    public int getnbCouronne2() { return this.nbCouronne2; }
+
+    public int getnbCouronne() {
+        return this.nbCouronne1;
     }
+
 }
