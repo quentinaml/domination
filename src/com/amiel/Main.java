@@ -107,6 +107,33 @@ public class Main {
             for (int i = 0; i < listePassage.length; i++){
                 System.out.println(listePassage[i].name);
             }
+            for (Joueur joueur : listePassage) {
+                afficheNomsDominoDansListe(piocheDuTour);
+                System.out.println(joueur.name);
+                fenetre.updateAffichage(joueur, piocheDuTour);
+                while(!fenetre.commencer){
+                    Thread.sleep(100);
+                }
+                fenetre.updateAffichage(joueur, piocheDuTour);
+                fenetre.coordx = -1;
+                fenetre.coordx2 = -1;
+                fenetre.nbClique = 0;
+                while(!joueur.regleVerifie) {
+
+                    while (fenetre.nbClique != 2) {
+
+                        Thread.sleep(100);
+                    }
+                    joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+                    if(!joueur.regleVerifie){
+                        fenetre.nbClique = 0;
+                    }
+                }
+                piocheDuTour = joueur.chooseDomino(piocheDuTour, fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+                joueur.regleVerifie = false;
+                fenetre.refresh();
+
+            }
             /*for (Joueur joueur : listeJoueurs){
                 int numeroDernierDomino = joueur.listeDominosChoisi.get(joueur.listeDominosChoisi.size()-1).getNumeroDomino();
                 if( listePassage.length == 0 ){
