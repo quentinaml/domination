@@ -166,7 +166,7 @@ public class Affichage {
 
     }
 
-    public void updatePlateau(int taille, int[][] plateau){
+    public void updatePlateau(int taille, int[][][] plateau){
 
             panel_plateau.setOpaque(true);
             panel_plateau.setBackground(Color.WHITE);
@@ -174,25 +174,32 @@ public class Affichage {
                 for (int x = 0; x < taille; x++) {
                     for (int y = 0; y < taille; y++) {
                         JButton label = new JButton();
+                        String imageName = null;
                         //label.setOpaque(true);
                         label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                         label.setMargin(new Insets(0, 0, 0, 0));
                         int offset = label.getInsets().left;
                         label.setPreferredSize(new Dimension(70, 70));
                         //label.setBorder(null);
-                        switch (plateau[x][y]) {
+                        switch (plateau[x][y][0]) {
                             case 0 -> {
                                 label.setBackground(Color.PINK);
                                 label.setText("vide");
                             }
-                            case 1 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/chateau.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 2 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Champs.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 3 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Forêt.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 4 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Mer.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 5 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Prairie.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 6 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Mines.png")), label.getWidth() - offset, label.getHeight() - offset));
-                            case 7 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Montagne.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 1 -> imageName = "images/chateau";
+                            case 2 -> imageName = "images/Champs";
+                            case 3 -> imageName = "images/Foret";
+                            case 4 -> imageName = "images/Mer";
+                            case 5 -> imageName = "images/Prairie";
+                            case 6 -> imageName = "images/Mines";
+                            case 7 -> imageName = "images/Montagne";
                         }
+                        if(imageName != null){
+                            imageName += "_" + plateau[x][y][1] + ".png";
+                            System.out.println(imageName);
+                            label.setIcon(resizeIcon(new ImageIcon(getImage(imageName)), label.getWidth() - offset, label.getHeight() - offset));
+                        }
+
                         int finalX = x;
                         int finalY = y;
                         label.addActionListener(actionEvent -> {
