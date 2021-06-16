@@ -126,11 +126,12 @@ public class Affichage {
             menu.add(afficheTour);
 
             for (int x = 0; x < piocheDuTour.size(); x++) {
-                JButton label = new JButton(String.valueOf(piocheDuTour.get(x).numeroDomino));
-                label.setOpaque(true);
-                label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                label.setBackground(Color.WHITE);
-                label.setPreferredSize(new Dimension(50, 50));
+                JButton label = new JButton();
+                int offset = label.getInsets().left;
+                String imageName = "images/" + piocheDuTour.get(x).numeroDomino + ".png";
+                label.setIcon(resizeIcon(new ImageIcon(getImage(imageName)), label.getWidth() - offset, label.getHeight() - offset));
+
+                //label.setPreferredSize(new Dimension(50, 50));
                 int finalX = x;
                 label.addActionListener(actionEvent -> {
                     dominoChoisi = piocheDuTour.get(finalX);
@@ -196,7 +197,6 @@ public class Affichage {
                         }
                         if(imageName != null){
                             imageName += "_" + plateau[x][y][1] + ".png";
-                            System.out.println(imageName);
                             label.setIcon(resizeIcon(new ImageIcon(getImage(imageName)), label.getWidth() - offset, label.getHeight() - offset));
                         }
 
