@@ -1,5 +1,6 @@
 package com.amiel;
 
+import java.io.IOException;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -7,74 +8,8 @@ import static java.util.Arrays.*;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-
-        int nbJoueurs = 0;
-        Affichage fenetre = new Affichage();
-        fenetre.initAffichage();
-        fenetre.afficheAccueil();
-        while (!fenetre.commencer) {
-            nbJoueurs = fenetre.nbJoueurs;
-            Thread.sleep(100);
-        }
-        fenetre.frame.dispose();
-
-        Joueur[] listeJoueurs = new Joueur[nbJoueurs];
-
-        for (int i = 1; i < nbJoueurs + 1; i++) {
-            listeJoueurs[i - 1] = new Joueur("Joueur" + i);
-        }
-        //établissement des règles
-        Pioche pioche = new Pioche("dominos.csv");
-        pioche.melangePioche();
-
-        //retire le nombre de dominos en fonction du nombre de joueur
-        if (nbJoueurs == 2) {
-            for (int i = 0; i < 24; i++) {
-                pioche.dominos.remove(0);
-            }
-        } else if (nbJoueurs == 3) {
-            for (int i = 0; i < 12; i++) {
-                pioche.dominos.remove(0);
-            }
-        }
-
-        ArrayList<King> listeKing = creerListeKing(nbJoueurs);
-
-        //TOUR 1
-        //Définir ordre des joueurs
-
-        Joueur[] listePassage = creerListePassage(nbJoueurs, listeJoueurs, true);
-
-        //Piocher les dominos
-        ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
-        fenetre.initAffichage();
-
-        //chaque joueur choisi son premier domino
-        tour(listePassage, piocheDuTour, fenetre);
-        //FIN TOUR 1
-
-        // autres tours
-        while (!pioche.dominos.isEmpty()) {
-            System.out.println(pioche.dominos);
-            //Piocher les dominos
-            piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
-
-            //liste de passage des joueurs
-            //listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
-            listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
-
-            tour(listePassage, piocheDuTour, fenetre);
-            //comptage des scores
-            for (Joueur joueur : listeJoueurs){
-                joueur.compteScore();
-                System.out.println(joueur.score);
-            }
-        }
-
-
-        System.out.println("terminé");
-
+    public static void main(String[] args) throws IOException, InterruptedException {
+        partie();
 
     }
 
@@ -217,5 +152,83 @@ public class Main {
             fenetre.refresh();
 
         }
+    }
+
+    public static void partie() throws InterruptedException, IOException {
+        int nbJoueurs = 0;
+        Affichage fenetre = new Affichage();
+        fenetre.initAffichage();
+        fenetre.afficheAccueil();
+        while (!fenetre.commencer) {
+            nbJoueurs = fenetre.nbJoueurs;
+            Thread.sleep(100);
+        }
+        fenetre.frame.dispose();
+
+        Joueur[] listeJoueurs = new Joueur[nbJoueurs];
+
+        for (int i = 1; i < nbJoueurs + 1; i++) {
+            listeJoueurs[i - 1] = new Joueur("Joueur" + i);
+        }
+        //établissement des règles
+        Pioche pioche = new Pioche("dominos.csv");
+        pioche.melangePioche();
+
+        //retire le nombre de dominos en fonction du nombre de joueur
+        if (nbJoueurs == 2) {
+            for (int i = 0; i < 24; i++) {
+                pioche.dominos.remove(0);
+            }
+        } else if (nbJoueurs == 3) {
+            for (int i = 0; i < 12; i++) {
+                pioche.dominos.remove(0);
+            }
+        }
+
+        ArrayList<King> listeKing = creerListeKing(nbJoueurs);
+
+        //TOUR 1
+        //Définir ordre des joueurs
+
+        Joueur[] listePassage = creerListePassage(nbJoueurs, listeJoueurs, true);
+
+        //Piocher les dominos
+        ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
+        fenetre.initAffichage();
+
+        //chaque joueur choisi son premier domino
+        tour(listePassage, piocheDuTour, fenetre);
+        //FIN TOUR 1
+
+        // autres tours
+        while (!pioche.dominos.isEmpty()) {
+            //Piocher les dominos
+            piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
+
+            //liste de passage des joueurs
+            //listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
+            listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
+
+            tour(listePassage, piocheDuTour, fenetre);
+            //comptage des scores
+            for (Joueur joueur : listeJoueurs){
+                joueur.compteScore();
+                System.out.println(joueur.score);
+            }
+        }
+
+
+
+        fenetre.frame.dispose();
+        fenetre.initAffichage();
+
+        String phraseResultat = "";
+        for(Joueur joueur : listeJoueurs){
+            phraseResultat += joueur.name + " : " + String.valueOf(joueur.score) + " points\n";
+        }
+
+        fenetre.afficheScore(phraseResultat);
+
+        System.out.println("terminé");
     }
 }

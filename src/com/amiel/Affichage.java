@@ -21,7 +21,7 @@ import java.util.ArrayList;
 7 = Montagne
  */
 
-public class Affichage {
+public class Affichage{
 
     JFrame frame;
     GridBagConstraints gbc = new GridBagConstraints();
@@ -164,7 +164,7 @@ public class Affichage {
             preViz.add(picLabel2);
             menu.add(preViz);
 
-            JTextArea instruction = new JTextArea("Cliquez sur la première case\nou vous voulez placer votre\ndomino, puis sur la deuxieme");
+            JTextArea instruction = new JTextArea("score :" + joueur.score);
             menu.add(instruction);
 
             //défaussage
@@ -269,6 +269,34 @@ public class Affichage {
         Image img = icon.getImage();
         Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);
+    }
+
+    public void afficheScore(String phraseResultat){
+
+        JLabel accueil = new JLabel("Voici la liste des scores de chaques joueurs :");
+        accueil.setOpaque(true);
+        accueil.setBackground(Color.BLACK);
+        accueil.setForeground(Color.WHITE);
+        accueil.setPreferredSize(new Dimension(1500, 300));
+
+        JTextArea afficheScore = new JTextArea(phraseResultat);
+
+        JButton rejouer = new JButton("Cliquez pour rejouer");
+        rejouer.setPreferredSize(new Dimension(300, 300));
+        rejouer.addActionListener(actionEvent -> {
+            try {
+                Main.partie();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        frame.add(accueil, BorderLayout.NORTH);
+        frame.add(afficheScore, BorderLayout.CENTER);
+        frame.add(rejouer, BorderLayout.SOUTH);
+        frame.setVisible(true);
     }
 
 }

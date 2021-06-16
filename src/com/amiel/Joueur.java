@@ -166,13 +166,10 @@ public class Joueur {
 
         for (int y = 0; y <plateau.taille-1; y++) {
             //cote gauche
-            System.out.println(coordxPlusPetit);
             for (int x = 1; x <= coordxPlusPetit; x++) {
                 if (plateau.plateau[y][coordxPlusPetit - x][0] != 0 && coordxPlusPetit - x < plusLoinGauche) {
 
                     plusLoinGauche = coordxPlusPetit - x;
-                    System.out.println(coordxPlusPetit);
-                    System.out.println(plusLoinGauche);
                 }
             }
             // coté droit x
@@ -209,52 +206,96 @@ public class Joueur {
 
     public void compteScore(){
         //compte couronnes
-        coordoneeCheck = new boolean[plateau.taille][plateau.taille];
-        for (int i = 0; i < plateau.taille - 1; i++) {
-            for (int j = 0; j < plateau.taille - 1; j++) {
+        score = 0;
+        boolean[][] coordoneeCheck = new boolean[plateau.taille][plateau.taille];
+        for (int i = 0; i < plateau.taille-1; i++) {
+            for (int j = 0; j < plateau.taille-1; j++) {
                 coordoneeCheck[i][j] = false;
             }
         }
 
+        for (int i = 0; i < plateau.taille-1; i++) {
+            for (int j = 0; j < plateau.taille - 1; j++) {
 
-        for (int i = 0; i < plateau.taille - 1; i++){
-            for (int j = 0; j < plateau.taille - 1; j++){
-                if(!coordoneeCheck[i][j]){
-                    coordoneeCheck[i][j] = true;
-                    if(plateau.plateau[i][j][0] != 0){
-                        int type = plateau.plateau[i][j][0];
-                        ArrayList<Integer> listeDominoMemeType = new ArrayList<>();
-
-                        //check + 1
-                        listeDominoMemeType.add(plateau.plateau[i][j][1]); // couronne
-                        listeDominoMemeType = checkLoop(i + 1, j , type, listeDominoMemeType);
-                        listeDominoMemeType = checkLoop(i , j + 1, type, listeDominoMemeType);
-
-                        int totalCouronnes = 0;
-                        for (Integer integer : listeDominoMemeType) {
-                            totalCouronnes += integer;
+                if (!coordoneeCheck[i][j] && plateau.plateau[i][j][0] != 0) {
+                    boolean[][] coordoneeCheck2 = new boolean[plateau.taille][plateau.taille];
+                    for (int x = 0; x < plateau.taille - 1; x++) {
+                        for (int y = 0; y < plateau.taille - 1; y++) {
+                            coordoneeCheck2[x][y] = false;
                         }
-                        score += listeDominoMemeType.size() * totalCouronnes;
+                    }
+                    coordoneeCheck2[i][j] = true;
+                    int type = plateau.plateau[i][j][0];
+                    int tailleBiome = 1;
+                    int tailleBiomeAvant = 0;
+                    while(tailleBiome > tailleBiomeAvant) {
+                        for (int x = 0; x < plateau.taille; x++) {
+                            for (int y = 0; y < plateau.taille; y++) {
+                                if(coordoneeCheck2[x][y]){
+                                    if(x > 0) {
+                                        if (!coordoneeCheck2[x - 1][y] && plateau.plateau[x - 1][y][0] == type) {
+                                            coordoneeCheck2[x - 1][y] = true;
+                                        }
+                                    }
+                                    if(x < 8) {
+                                        if (!coordoneeCheck2[x + 1][y] && plateau.plateau[x + 1][y][0] == type) {
+                                            coordoneeCheck2[x + 1][y] = true;
+                                        }
+                                    }
+                                    if(y > 0) {
+                                        if (!coordoneeCheck2[x][y - 1] && plateau.plateau[x][y - 1][0] == type) {
+                                            coordoneeCheck2[x][y - 1] = true;
+                                        }
+                                    }
+                                    if(y<8) {
+                                        if (!coordoneeCheck2[x][y + 1] && plateau.plateau[x][y + 1][0] == type) {
+                                            coordoneeCheck2[x][y + 1] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        tailleBiomeAvant = tailleBiome;
+                        tailleBiome = compteTailleBiome(coordoneeCheck2);
+                    }
+                    int nbCouronneBiome = compteCouronneBiome(coordoneeCheck2);
+                    score += nbCouronneBiome*tailleBiome;
+                    for (int x = 0; x < plateau.taille; x++) {
+                        for (int y = 0; y < plateau.taille; y++) {
+                            if (coordoneeCheck2[x][y]) {
+                                coordoneeCheck[x][y] = true;
+                            }
+                        }
                     }
                 }
-
             }
         }
     }
 
-    public ArrayList<Integer> checkLoop (int i, int j, int type, ArrayList<Integer> listeDominoMemeType){
-        //check + ou - 1 sauf si dans listeDominoMemeType
-        if (!coordoneeCheck[i][j]) {
-            if(plateau.plateau[i][j][0] == type){
-                listeDominoMemeType.add(plateau.plateau[i][j][1]); // couronne
-                coordoneeCheck[i][j] = true;
-                listeDominoMemeType = checkLoop(i, j + 1, type, listeDominoMemeType);
-                listeDominoMemeType = checkLoop(i , j - 1 , type, listeDominoMemeType);
-                listeDominoMemeType = checkLoop(i + 1 , j, type, listeDominoMemeType);
-                listeDominoMemeType = checkLoop(i - 1, j, type, listeDominoMemeType);
+    public int compteTailleBiome(boolean[][] coordoneeCheck2){
+        int taille = 0;
+        for (int x = 0; x < plateau.taille - 1; x++) {
+            for (int y = 0; y < plateau.taille - 1; y++) {
+                if(coordoneeCheck2[x][y]){
+                    taille++;
+                }
             }
         }
-        return listeDominoMemeType;
+        return taille;
     }
+
+    public int compteCouronneBiome(boolean[][] coordoneeCheck2){
+        int total = 0;
+        for (int x = 0; x < plateau.taille - 1; x++) {
+            for (int y = 0; y < plateau.taille - 1; y++) {
+                if(coordoneeCheck2[x][y] && plateau.plateau[x][y][1] != 0){
+                    total += plateau.plateau[x][y][1];
+                }
+            }
+        }
+        return total;
+    }
+
+
 }
 
