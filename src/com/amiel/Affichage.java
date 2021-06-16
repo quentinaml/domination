@@ -144,10 +144,26 @@ public class Affichage {
 
         }
         else{
+
             menu.remove(piocheDuTour.size()+1);
             menu.repaint();
-            afficheDomino.setText("Votre domino  est :\nnombre de couronne1 : " + dominoChoisi.nbCouronne2 + " \ntype1 :" + dominoChoisi.type1 + " \nnombre de couronne2 : " + dominoChoisi.nbCouronne2 + " \ntype 2 : " + dominoChoisi.type2 + " \nnumero du domino : " + dominoChoisi.numeroDomino);
-            menu.add(afficheDomino);
+
+            BufferedImage myPicture = null;
+            //myPicture = ImageIO.read(new File("images/chateau.png"));
+            JPanel preViz = new JPanel();
+            preViz.setSize(menu.getWidth()/3,menu.getHeight()/3);
+            int offset = preViz.getInsets().left;
+
+            String partieDomino1 = "images/" + dominoChoisi.type1 + "_" + dominoChoisi.nbCouronne1 + ".png";
+            String partieDomino2 = "images/" + dominoChoisi.type2 + "_" + dominoChoisi.nbCouronne2 + ".png";
+
+            JLabel picLabel = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino1)), (preViz.getWidth() - offset)/2, (preViz.getHeight() - offset)/2));
+            JLabel picLabel2 = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino2)), (preViz.getWidth() - offset)/2, (preViz.getHeight() - offset)/2));
+
+            preViz.add(picLabel);
+            preViz.add(picLabel2);
+            menu.add(preViz);
+
             JTextArea instruction = new JTextArea("Cliquez sur la première case\nou vous voulez placer votre\ndomino, puis sur la deuxieme");
             menu.add(instruction);
 
@@ -192,7 +208,7 @@ public class Affichage {
                             case 3 -> imageName = "images/Foret";
                             case 4 -> imageName = "images/Mer";
                             case 5 -> imageName = "images/Prairie";
-                            case 6 -> imageName = "images/Mines";
+                            case 6 -> imageName = "images/Mine";
                             case 7 -> imageName = "images/Montagne";
                         }
                         if(imageName != null){
