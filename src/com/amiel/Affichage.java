@@ -148,8 +148,6 @@ public class Affichage {
             menu.remove(piocheDuTour.size() + 1);
             menu.repaint();
 
-            BufferedImage myPicture = null;
-            //myPicture = ImageIO.read(new File("images/chateau.png"));
             JPanel preViz = new JPanel();
             preViz.setSize(menu.getWidth() / 3, menu.getHeight() / 3);
             int offset = preViz.getInsets().left;
@@ -283,15 +281,10 @@ public class Affichage {
         JButton rejouer = new JButton("Cliquez pour rejouer");
         rejouer.setPreferredSize(new Dimension(300, 300));
         rejouer.addActionListener(actionEvent -> {
-            try {
-                Main.partie();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            commencer = true;
+            frame.dispose();
         });
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(accueil, BorderLayout.NORTH);
         frame.add(afficheScore, BorderLayout.CENTER);
         frame.add(rejouer, BorderLayout.SOUTH);

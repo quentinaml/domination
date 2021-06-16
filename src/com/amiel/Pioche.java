@@ -19,7 +19,7 @@ public class Pioche {
 
             // Afficher le contenu du tableau
             for (int val = 0; val < data.length; val += 5) {
-                Domino domino = new Domino(Integer.valueOf(data[val]), data[val + 1], Integer.valueOf(data[val + 2]), data[val + 3], Integer.valueOf(data[val + 4]));
+                Domino domino = new Domino(Integer.parseInt(data[val]), data[val + 1], Integer.parseInt(data[val + 2]), data[val + 3], Integer.parseInt(data[val + 4]));
                 pioche.add(domino);
             }
         }
@@ -38,8 +38,8 @@ public class Pioche {
             Domino domino = (Domino) dominos.get(i);
             listeDomino.add(domino);
         }
-        for (int i = nbDominosPioche - 1; i >= 0; i--) {
-            dominos.remove(i);
+        if (nbDominosPioche > 0) {
+            dominos.subList(0, nbDominosPioche).clear();
         }
 
 
