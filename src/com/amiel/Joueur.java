@@ -172,8 +172,6 @@ public class Joueur {
             for (int x = 1; x <= coordxPlusPetit; x++) {
                 if (plateau.plateau[y][coordxPlusPetit - x] != 0 && coordxPlusPetit - x < plusLoinGauche) {
                     plusLoinGauche = coordxPlusPetit - x;
-                    System.out.print("plusLoinGauche = ");
-                    System.out.println(plusLoinGauche);
                 }
             }
             // coté droit x
@@ -200,17 +198,11 @@ public class Joueur {
                 }
             }
         }
-        System.out.print("x- = ");
-        System.out.println(plusLoinGauche);
-        System.out.print("x+ = ");
-        System.out.println(plusLoinDroite);
-        System.out.print("y- = ");
-        System.out.println(plusLoinHaut);
-        System.out.print("y+ = ");
-        System.out.println(plusLoinBas);
-
-
-        return (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinHaut - plusLoinBas - 1 <= 5);
+        boolean b = (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinHaut - plusLoinBas - 1 <= 5);
+        if(!b){
+            System.out.println("Taille du terrain dépasse les 5x5");
+        }
+        return b;
     }
 
     public void compteScore(){
