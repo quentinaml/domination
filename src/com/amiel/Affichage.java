@@ -1,8 +1,12 @@
 package com.amiel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -169,33 +173,25 @@ public class Affichage {
             if(numeroDominoChoisi == 0) {
                 for (int x = 0; x < taille; x++) {
                     for (int y = 0; y < taille; y++) {
-                        JButton label = new JButton(x + ";" + y);
-                        label.setOpaque(true);
+                        JButton label = new JButton();
+                        //label.setOpaque(true);
                         label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                        if (plateau[x][y] == 0) { //Vide
-                            label.setBackground(Color.PINK);
-                            label.setText("vide");
-                        } else if (plateau[x][y] == 1) { //Chateau
-                            label.setBackground(Color.BLACK);
-                            label.setText("Chateau");
-                        } else if (plateau[x][y] == 2) { //Champs
-                            label.setBackground(Color.YELLOW);
-                            label.setText("Champs");
-                        } else if (plateau[x][y] == 3) { //Foret
-                            label.setBackground(Color.GREEN);
-                            label.setText("Foret");
-                        } else if (plateau[x][y] == 4) { //Mer
-                            label.setBackground(Color.BLUE);
-                            label.setText("Mer");
-                        } else if (plateau[x][y] == 5) { //Prairie
-                            label.setBackground(Color.ORANGE);
-                            label.setText("Prairie");
-                        } else if (plateau[x][y] == 6) { //Mine
-                            label.setBackground(Color.GRAY);
-                            label.setText("Mine");
-                        } else if (plateau[x][y] == 7) { //Montagne
-                            label.setBackground(Color.WHITE);
-                            label.setText("Montagne");
+                        label.setMargin(new Insets(0, 0, 0, 0));
+                        int offset = label.getInsets().left;
+                        label.setPreferredSize(new Dimension(70, 70));
+                        //label.setBorder(null);
+                        switch (plateau[x][y]) {
+                            case 0 -> {
+                                label.setBackground(Color.PINK);
+                                label.setText("vide");
+                            }
+                            case 1 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/chateau.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 2 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Champs.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 3 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Forêt.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 4 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Mer.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 5 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Prairie.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 6 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Mines.png")), label.getWidth() - offset, label.getHeight() - offset));
+                            case 7 -> label.setIcon(resizeIcon(new ImageIcon(getImage("images/Montagne.png")), label.getWidth() - offset, label.getHeight() - offset));
                         }
                         int finalX = x;
                         int finalY = y;
@@ -234,4 +230,22 @@ public class Affichage {
         frame.setVisible(true);
 
     }
+
+    public BufferedImage getImage (String imageName){
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File(imageName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert myPicture != null;
+        return myPicture;
+    }
+
+    private static Icon resizeIcon(ImageIcon icon, int resizedWidth, int resizedHeight) {
+        Image img = icon.getImage();
+        Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
+    }
+
 }
