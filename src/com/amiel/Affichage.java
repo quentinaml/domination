@@ -21,7 +21,7 @@ import java.util.ArrayList;
 7 = Montagne
  */
 
-public class Affichage{
+public class Affichage {
 
     JFrame frame;
     GridBagConstraints gbc = new GridBagConstraints();
@@ -38,7 +38,7 @@ public class Affichage{
     int coordx2 = -1;
     int coordy2 = -1;
 
-    public void refresh(){
+    public void refresh() {
         menu.removeAll();
         panel_plateau.removeAll();
         coordx = -1;
@@ -47,6 +47,7 @@ public class Affichage{
         commencer = false;
         numeroDominoChoisi = 0;
     }
+
     public void initAffichage() {
         frame = new JFrame("jeu en cours");
         frame.setSize(new Dimension(1500, 900));
@@ -60,7 +61,7 @@ public class Affichage{
         defaussage = false;
     }
 
-    public void afficheAccueil(){
+    public void afficheAccueil() {
 
         JLabel accueil = new JLabel("Bienvenue sur Domination, veuillez choisir le nombre de joueurs :");
         accueil.setOpaque(true);
@@ -77,7 +78,7 @@ public class Affichage{
         JButton minus = new JButton("-");
         minus.setPreferredSize(new Dimension(300, 300));
         minus.addActionListener(actionEvent -> {
-            if(nbJoueurs > 2) {
+            if (nbJoueurs > 2) {
                 nbJoueurs--;
             }
             afficheNbJoueurs.setText("nombre de joueurs : " + nbJoueurs);
@@ -87,7 +88,7 @@ public class Affichage{
         JButton plus = new JButton("+");
         plus.setPreferredSize(new Dimension(300, 300));
         plus.addActionListener(actionEvent -> {
-            if(nbJoueurs < 4 ) {
+            if (nbJoueurs < 4) {
                 nbJoueurs++;
             }
             afficheNbJoueurs.setText("nombre de joueurs : " + nbJoueurs);
@@ -96,7 +97,7 @@ public class Affichage{
         JButton buttonCommencer = new JButton("Cliquez pour commencer la partie");
         buttonCommencer.setPreferredSize(new Dimension(1500, 300));
         buttonCommencer.addActionListener(actionEvent -> {
-            if(nbJoueurs > 1) {
+            if (nbJoueurs > 1) {
                 commencer = true;
             }
 
@@ -111,7 +112,7 @@ public class Affichage{
         frame.setVisible(true);
     }
 
-    public void updateMenu(Joueur joueur, ArrayList<Domino> piocheDuTour){
+    public void updateMenu(Joueur joueur, ArrayList<Domino> piocheDuTour) {
         menu.setOpaque(true);
         menu.setBackground(Color.BLACK);
         gbc.gridx = 0;
@@ -120,7 +121,7 @@ public class Affichage{
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         JTextArea afficheDomino = new JTextArea("");
-        if(numeroDominoChoisi == 0){
+        if (numeroDominoChoisi == 0) {
             JLabel afficheTour = new JLabel(joueur.name + " : choisis un domino ");
             afficheTour.setForeground(Color.WHITE);
             menu.add(afficheTour);
@@ -142,23 +143,22 @@ public class Affichage{
             }
             menu.add(afficheDomino);
 
-        }
-        else{
+        } else {
 
-            menu.remove(piocheDuTour.size()+1);
+            menu.remove(piocheDuTour.size() + 1);
             menu.repaint();
 
             BufferedImage myPicture = null;
             //myPicture = ImageIO.read(new File("images/chateau.png"));
             JPanel preViz = new JPanel();
-            preViz.setSize(menu.getWidth()/3,menu.getHeight()/3);
+            preViz.setSize(menu.getWidth() / 3, menu.getHeight() / 3);
             int offset = preViz.getInsets().left;
 
             String partieDomino1 = "images/" + dominoChoisi.type1 + "_" + dominoChoisi.nbCouronne1 + ".png";
             String partieDomino2 = "images/" + dominoChoisi.type2 + "_" + dominoChoisi.nbCouronne2 + ".png";
 
-            JLabel picLabel = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino1)), (preViz.getWidth() - offset)/2, (preViz.getHeight() - offset)/2));
-            JLabel picLabel2 = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino2)), (preViz.getWidth() - offset)/2, (preViz.getHeight() - offset)/2));
+            JLabel picLabel = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino1)), (preViz.getWidth() - offset) / 2, (preViz.getHeight() - offset) / 2));
+            JLabel picLabel2 = new JLabel(resizeIcon(new ImageIcon(getImage(partieDomino2)), (preViz.getWidth() - offset) / 2, (preViz.getHeight() - offset) / 2));
 
             preViz.add(picLabel);
             preViz.add(picLabel2);
@@ -183,65 +183,64 @@ public class Affichage{
 
     }
 
-    public void updatePlateau(int taille, int[][][] plateau){
+    public void updatePlateau(int taille, int[][][] plateau) {
 
-            panel_plateau.setOpaque(true);
-            panel_plateau.setBackground(Color.WHITE);
-            if(numeroDominoChoisi == 0) {
-                for (int x = 0; x < taille; x++) {
-                    for (int y = 0; y < taille; y++) {
-                        JButton label = new JButton();
-                        String imageName = null;
-                        //label.setOpaque(true);
-                        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                        label.setMargin(new Insets(0, 0, 0, 0));
-                        int offset = label.getInsets().left;
-                        label.setPreferredSize(new Dimension(70, 70));
-                        //label.setBorder(null);
-                        switch (plateau[x][y][0]) {
-                            case 0 -> {
-                                label.setBackground(Color.PINK);
-                                label.setText("vide");
-                            }
-                            case 1 -> imageName = "images/chateau";
-                            case 2 -> imageName = "images/Champs";
-                            case 3 -> imageName = "images/Foret";
-                            case 4 -> imageName = "images/Mer";
-                            case 5 -> imageName = "images/Prairie";
-                            case 6 -> imageName = "images/Mine";
-                            case 7 -> imageName = "images/Montagne";
+        panel_plateau.setOpaque(true);
+        panel_plateau.setBackground(Color.WHITE);
+        if (numeroDominoChoisi == 0) {
+            for (int x = 0; x < taille; x++) {
+                for (int y = 0; y < taille; y++) {
+                    JButton label = new JButton();
+                    String imageName = null;
+                    //label.setOpaque(true);
+                    label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    label.setMargin(new Insets(0, 0, 0, 0));
+                    int offset = label.getInsets().left;
+                    label.setPreferredSize(new Dimension(70, 70));
+                    //label.setBorder(null);
+                    switch (plateau[x][y][0]) {
+                        case 0 -> {
+                            label.setBackground(Color.PINK);
+                            label.setText("vide");
                         }
-                        if(imageName != null){
-                            imageName += "_" + plateau[x][y][1] + ".png";
-                            label.setIcon(resizeIcon(new ImageIcon(getImage(imageName)), label.getWidth() - offset, label.getHeight() - offset));
-                        }
-
-                        int finalX = x;
-                        int finalY = y;
-                        label.addActionListener(actionEvent -> {
-                            if(nbClique == 0) {
-                                coordx = finalY;
-                                coordy = finalX;
-                            }
-                            else if(nbClique == 1){
-                                coordx2 = finalY;
-                                coordy2 = finalX;
-                            }
-                            nbClique++;
-                        });
-                        panel_plateau.add(label);
+                        case 1 -> imageName = "images/chateau";
+                        case 2 -> imageName = "images/Champs";
+                        case 3 -> imageName = "images/Foret";
+                        case 4 -> imageName = "images/Mer";
+                        case 5 -> imageName = "images/Prairie";
+                        case 6 -> imageName = "images/Mine";
+                        case 7 -> imageName = "images/Montagne";
                     }
+                    if (imageName != null) {
+                        imageName += "_" + plateau[x][y][1] + ".png";
+                        label.setIcon(resizeIcon(new ImageIcon(getImage(imageName)), label.getWidth() - offset, label.getHeight() - offset));
+                    }
+
+                    int finalX = x;
+                    int finalY = y;
+                    label.addActionListener(actionEvent -> {
+                        if (nbClique == 0) {
+                            coordx = finalY;
+                            coordy = finalX;
+                        } else if (nbClique == 1) {
+                            coordx2 = finalY;
+                            coordy2 = finalX;
+                        }
+                        nbClique++;
+                    });
+                    panel_plateau.add(label);
                 }
             }
-            panel_plateau.setLayout(new GridLayout(9, 9));
-            gbc.gridx = 1;
-            gbc.gridwidth = 5;
-            gbc.gridheight = 1;
-            gbc.gridy = 0;
-      //  }
+        }
+        panel_plateau.setLayout(new GridLayout(9, 9));
+        gbc.gridx = 1;
+        gbc.gridwidth = 5;
+        gbc.gridheight = 1;
+        gbc.gridy = 0;
+        //  }
     }
 
-    public void updateAffichage(Joueur joueur, ArrayList<Domino> piocheDuTour){
+    public void updateAffichage(Joueur joueur, ArrayList<Domino> piocheDuTour) {
         frame.setLayout(new GridBagLayout());
         frame.setVisible(true);
         gbc.weightx = 6;
@@ -254,7 +253,7 @@ public class Affichage{
 
     }
 
-    public BufferedImage getImage (String imageName){
+    public BufferedImage getImage(String imageName) {
         BufferedImage myPicture = null;
         try {
             myPicture = ImageIO.read(new File(imageName));
@@ -267,11 +266,11 @@ public class Affichage{
 
     private static Icon resizeIcon(ImageIcon icon, int resizedWidth, int resizedHeight) {
         Image img = icon.getImage();
-        Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight, java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);
     }
 
-    public void afficheScore(String phraseResultat){
+    public void afficheScore(String phraseResultat) {
 
         JLabel accueil = new JLabel("Voici la liste des scores de chaques joueurs :");
         accueil.setOpaque(true);

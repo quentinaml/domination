@@ -17,26 +17,24 @@ public class Main {
         ArrayList<Integer> liste = new ArrayList<Integer>(n);
         Random random = new Random();
 
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             liste.add(random.nextInt(n));
         }
         return liste;
     }
 
-    public static ArrayList<King> creerListeKing(int nbJoueurs){
+    public static ArrayList<King> creerListeKing(int nbJoueurs) {
         ArrayList<King> listeKing = new ArrayList<King>(3);
-        if (nbJoueurs == 2){
+        if (nbJoueurs == 2) {
             listeKing.add(new King("rouge"));
             listeKing.add(new King("rouge"));
             listeKing.add(new King("bleu"));
             listeKing.add(new King("bleu"));
-        } else if (nbJoueurs == 3){
+        } else if (nbJoueurs == 3) {
             listeKing.add(new King("rouge"));
             listeKing.add(new King("bleu"));
             listeKing.add(new King("vert"));
-        }
-        else if (nbJoueurs == 4) {
+        } else if (nbJoueurs == 4) {
             listeKing.add(new King("rouge"));
             listeKing.add(new King("bleu"));
             listeKing.add(new King("vert"));
@@ -45,24 +43,23 @@ public class Main {
         return listeKing;
     }
 
-    public static Joueur[] creerListePassage(int nbJoueurs, Joueur[] listeJoueurs, boolean premierTour){
+    public static Joueur[] creerListePassage(int nbJoueurs, Joueur[] listeJoueurs, boolean premierTour) {
         Joueur[] listePassage = new Joueur[4];
-        if( nbJoueurs == 3){
+        if (nbJoueurs == 3) {
             listePassage = new Joueur[3];
         }
 
-        if(premierTour){
-            for ( int i = 0; i < nbJoueurs; i++){
+        if (premierTour) {
+            for (int i = 0; i < nbJoueurs; i++) {
                 listePassage[i] = listeJoueurs[i];
-                if(nbJoueurs == 2){
-                    listePassage[i+2] = listeJoueurs[i];
+                if (nbJoueurs == 2) {
+                    listePassage[i + 2] = listeJoueurs[i];
                 }
             }
             Collections.shuffle(asList(listePassage));
-        }
-        else{
+        } else {
             listePassage[0] = listeJoueurs[0];
-            if(nbJoueurs != 2) {
+            if (nbJoueurs != 2) {
                 for (int i = 1; i < listeJoueurs.length; i++) {
                     int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1).getNumeroDomino();
                     listePassage[i] = listeJoueurs[i];
@@ -78,8 +75,7 @@ public class Main {
                         }
                     }
                 }
-            }
-            else{
+            } else {
                 int numeroDernierDomino = listeJoueurs[1].listeDominosChoisi.get(listeJoueurs[1].listeDominosChoisi.size() - 1).getNumeroDomino();
                 listePassage[1] = listeJoueurs[1];
                 int j = 1;
@@ -113,8 +109,8 @@ public class Main {
         return listePassage;
     }
 
-    public static void afficheNomsDominoDansListe (ArrayList<Domino> piocheDuTour){
-        for (int i = 0; i < piocheDuTour.size();i++) {
+    public static void afficheNomsDominoDansListe(ArrayList<Domino> piocheDuTour) {
+        for (int i = 0; i < piocheDuTour.size(); i++) {
             System.out.println(piocheDuTour.get(i).getNumeroDomino());
         }
     }
@@ -211,19 +207,18 @@ public class Main {
 
             tour(listePassage, piocheDuTour, fenetre);
             //comptage des scores
-            for (Joueur joueur : listeJoueurs){
+            for (Joueur joueur : listeJoueurs) {
                 joueur.compteScore();
                 System.out.println(joueur.score);
             }
         }
 
 
-
         fenetre.frame.dispose();
         fenetre.initAffichage();
 
         String phraseResultat = "";
-        for(Joueur joueur : listeJoueurs){
+        for (Joueur joueur : listeJoueurs) {
             phraseResultat += joueur.name + " : " + String.valueOf(joueur.score) + " points\n";
         }
 

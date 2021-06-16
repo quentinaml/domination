@@ -17,17 +17,17 @@ public class Domino {
         this.numeroDomino = numeroDomino;
     }
 
-    public boolean afficheDomino(){
+    public boolean afficheDomino() {
         System.out.println(this.nbCouronne1 + " Paysage :" + ConvertTypeToInt(this.type1) + " " + this.nbCouronne2 + "  Paysage :" + ConvertTypeToInt(this.type2) + " " + this.numeroDomino);
         return false;
     }
 
-    public boolean afficheNumeroDomino(){
+    public boolean afficheNumeroDomino() {
         //System.out.println(this.numeroDomino);
         return false;
     }
 
-    public int ConvertTypeToInt(String type){
+    public int ConvertTypeToInt(String type) {
 
         return switch (type) {
             case "Chateau" -> 1;
@@ -40,15 +40,25 @@ public class Domino {
             default -> 0;
         };
     }
-    public int getType1(){return ConvertTypeToInt(this.type1);}
-    public int getType2(){return ConvertTypeToInt(this.type2);}
 
-    public int getnbCouronne2() { return this.nbCouronne2; }
+    public int getType1() {
+        return ConvertTypeToInt(this.type1);
+    }
+
+    public int getType2() {
+        return ConvertTypeToInt(this.type2);
+    }
+
+    public int getnbCouronne2() {
+        return this.nbCouronne2;
+    }
 
     public int getnbCouronne() {
         return this.nbCouronne1;
     }
 
-    public int getNumeroDomino() { return this.numeroDomino; }
+    public int getNumeroDomino() {
+        return this.numeroDomino;
+    }
 
 }
