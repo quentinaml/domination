@@ -94,18 +94,17 @@ public class Joueur {
                 return verifierCaseNonUtilisee(coordx, coordy) &&
                         verifierCaseNonUtilisee(coordx2, coordy2) &&
                         coteACote(coordx, coordy, coordx2, coordy2) &&
-                        tailleMax(coordx, coordy) &&
-                        tailleMax(coordx2, coordy2);
+                        tailleMax(coordx, coordy, coordx2, coordy2);
             }
         }
         return false;
     }
 
     public boolean verifierCaseNonUtilisee(int x, int y) {
-        if(!(plateau.plateau[x][y] == 0) ){
+        if(!(plateau.plateau[y][x] == 0) ){
             System.out.println("La case est déjà utilsée");
         }
-        return plateau.plateau[x][y] == 0;
+        return plateau.plateau[y][x] == 0;
     }
 
     public boolean dansLesLimitesDuPlateau(int coord) {
@@ -123,7 +122,7 @@ public class Joueur {
         boolean result = false;
 
         if( x != 8){
-            result = plateau.plateau[y][x+1] == typeVerifie;
+            result = (plateau.plateau[y][x+1] == typeVerifie) ;
 
         }
         if(y != 8 ){
@@ -149,37 +148,69 @@ public class Joueur {
         return Math.abs(coordx-coordx2) == 1 ^ Math.abs(coordy-coordy2) == 1;
     }
 
-    public boolean tailleMax (int coordx, int coordy){
-        // coté gauche x
-        int plusLoinGauche = coordx;
-        int plusLoinDroite = coordx;
-        for(var x = 1; x <= coordx; x++){
-            if(plateau.plateau[coordx-x][coordy] != 0 ){
-                plusLoinGauche = coordx - x;
-            }
-        }
-        // coté droit x
-        for(var x = coordx + 1; x <= plateau.taille-1; x++){
-            if(plateau.plateau[x][coordy] != 0 ){
-                plusLoinDroite = x;
-            }
-        }
-        // coté haut y
-        int plusLoinHaut = coordy;
-        int plusLoinBas = coordy;
-        for(var y = 1; y <= coordy; y++){
-            if(plateau.plateau[coordx][coordy-y] != 0 ){
-                plusLoinHaut = coordy - y;
-            }
-        }
+    public boolean tailleMax (int coordx, int coordy, int coordx2, int coordy2){
+        int coordxPlusPetit = coordx2;
+        int coordxPlusGrand = coordx;
+        int coordyPlusPetit = coordy2;
+        int coordyPlusBas = coordy;
 
-        //coté bas y
-        for(var y = coordy + 1; y <= plateau.taille-1; y++){
-            if(plateau.plateau[coordx][y] !=  0 ){
-                plusLoinBas = y ;
+        if(coordx <= coordx2) {
+            coordxPlusPetit = coordx;
+            coordxPlusGrand = coordx2;
+        }
+        if(coordy <= coordy2) {
+            coordyPlusPetit = coordy;
+            coordyPlusBas = coordy2;
+        }
+        int plusLoinGauche = coordxPlusPetit;
+        int plusLoinDroite = coordxPlusGrand;
+        int plusLoinHaut = coordyPlusPetit;
+        int plusLoinBas = coordyPlusBas;
+
+        for (int y = 0; y <plateau.taille-1; y++) {
+            //cote gauche
+            for (int x = 1; x <= coordxPlusPetit; x++) {
+                if (plateau.plateau[y][coordxPlusPetit - x] != 0 && coordxPlusPetit - x < plusLoinGauche) {
+                    plusLoinGauche = coordxPlusPetit - x;
+                    System.out.print("plusLoinGauche = ");
+                    System.out.println(plusLoinGauche);
+                }
+            }
+            // coté droit x
+            for (int x = coordxPlusGrand + 1; x <= plateau.taille - 1; x++ ) {
+                if (plateau.plateau[y][x] != 0 && x > plusLoinDroite) {
+                    plusLoinDroite = x;
+                }
             }
         }
-        return (plusLoinDroite - plusLoinGauche <= 5) && (plusLoinHaut - plusLoinBas <= 5);
+        // calcul taille hauteur
+        ;
+        for (int x = 0; x < plateau.taille-1; x++) {
+            // coté haut
+            for (int y = 1; y <= coordyPlusPetit; y++) {
+                if (plateau.plateau[coordyPlusPetit - y][x] != 0 && coordyPlusPetit - y < plusLoinHaut) {
+                    plusLoinHaut = coordyPlusPetit - y;
+                }
+            }
+
+            //coté bas
+            for (int y = coordyPlusBas; y <= plateau.taille - 1; y++) {
+                if (plateau.plateau[y][x] != 0 && y > plusLoinBas) {
+                    plusLoinBas = y;
+                }
+            }
+        }
+        System.out.print("x- = ");
+        System.out.println(plusLoinGauche);
+        System.out.print("x+ = ");
+        System.out.println(plusLoinDroite);
+        System.out.print("y- = ");
+        System.out.println(plusLoinHaut);
+        System.out.print("y+ = ");
+        System.out.println(plusLoinBas);
+
+
+        return (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinHaut - plusLoinBas - 1 <= 5);
     }
 
     public void compteScore(){
