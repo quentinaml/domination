@@ -76,10 +76,7 @@ public class Main {
             fenetre.frame.dispose();
             fenetre.initAffichage();
 
-            String phraseResultat = "";
-            for (Joueur joueur : listeJoueurs) {
-                phraseResultat += joueur.name + " : " + joueur.score + " points\n";
-            }
+            String phraseResultat = classement(listeJoueurs);
 
             fenetre.afficheScore(phraseResultat);
             while (!fenetre.commencer) {
@@ -219,6 +216,47 @@ public class Main {
             fenetre.refresh();
 
         }
+    }
+
+    public static String classement(Joueur[] listeJoueurs){
+        String message = "";
+        Joueur[] classementListe = listeJoueurs;
+        Joueur[] classementListeAvant = classementListe;
+        do {
+            classementListeAvant = classementListe;
+            for (int x = 0; x < classementListe.length - 1; x++) {
+                if (classementListe[x].score < classementListe[x + 1].score) {
+                    Joueur copie = classementListe[x];
+                    classementListe[x] = classementListe[x + 1];
+                    classementListe[x + 1] = copie;
+                }
+            }
+
+        }while(classementListe != classementListeAvant);
+
+        int x = classementListe.length - 2;
+        do {
+            classementListeAvant = classementListe;
+            while (x >= 0) {
+                if (classementListe[x].score == classementListe[x + 1].score && classementListe[x].taillePlusGrandBiome < classementListe[x + 1].taillePlusGrandBiome) {
+                    Joueur copie = classementListe[x];
+                    classementListe[x] = classementListe[x + 1];
+                    classementListe[x + 1] = copie;
+                }
+                x--;
+            }
+        }while(classementListe != classementListeAvant);
+
+        if(classementListe[0].taillePlusGrandBiome == classementListe[1].taillePlusGrandBiome && classementListe[0].score == classementListe[1].score){
+            message = "Egalite ! \n";
+        }
+        else{
+            message = "Voici le classement : \n";
+        }
+        for (Joueur joueur : classementListe) {
+            message +=  joueur.name + " : " + joueur.score + " points, plus grand biome : " + joueur.taillePlusGrandBiome + "\n";
+        }
+        return message;
     }
 
 

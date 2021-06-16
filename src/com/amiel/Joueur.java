@@ -8,6 +8,7 @@ public class Joueur {
     public String name;
     public int score;
     public int king;
+    public int taillePlusGrandBiome = 0;
     public ArrayList<Domino> listeDominosChoisi;
     private int[][] plateauCoordonnee;
     boolean regleVerifie = false;
@@ -279,6 +280,9 @@ public class Joueur {
                     taille++;
                 }
             }
+        }
+        if (taille > taillePlusGrandBiome){
+            taillePlusGrandBiome = taille;
         }
         return taille;
     }
