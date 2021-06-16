@@ -49,4 +49,6 @@ public class Domino {
         return this.nbCouronne1;
     }
 
+    public int getNumeroDomino() { return this.numeroDomino; }
+
 }

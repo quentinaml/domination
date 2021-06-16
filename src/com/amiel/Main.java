@@ -54,7 +54,7 @@ public class Main {
             afficheNomsDominoDansListe(piocheDuTour);
             System.out.println(joueur.name);
             fenetre.updateAffichage(joueur, piocheDuTour);
-            while(!fenetre.commencer){
+            while (!fenetre.commencer) {
                 Thread.sleep(100);
             }
             fenetre.updateAffichage(joueur, piocheDuTour);
@@ -62,19 +62,19 @@ public class Main {
             fenetre.coordx2 = -1;
             fenetre.nbClique = 0;
 
-            while(!joueur.regleVerifie) {
-                if(fenetre.defaussage){
+            while (!joueur.regleVerifie) {
+                if (fenetre.defaussage) {
                     break;
                 }
 
                 while (fenetre.nbClique != 2) {
-                    if(fenetre.defaussage){
+                    if (fenetre.defaussage) {
                         break;
                     }
                     Thread.sleep(100);
                 }
                 joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-                if(!joueur.regleVerifie){
+                if (!joueur.regleVerifie) {
                     fenetre.nbClique = 0;
                 }
             }
@@ -126,11 +126,11 @@ public class Main {
                 fenetre.coordx2 = -1;
                 fenetre.nbClique = 0;
                 while (!joueur.regleVerifie) {
-                    if(fenetre.defaussage){
+                    if (fenetre.defaussage) {
                         break;
                     }
                     while (fenetre.nbClique != 2) {
-                        if(fenetre.defaussage){
+                        if (fenetre.defaussage) {
                             break;
                         }
                         Thread.sleep(100);
@@ -153,12 +153,8 @@ public class Main {
         for (Joueur joueur : listeJoueurs) {
 
 
-
-
-
-
-
         }
+    }
 
     private static ArrayList<Integer> generateRandomArray(int n) {
         ArrayList<Integer> liste = new ArrayList<Integer>(n);
