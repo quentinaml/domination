@@ -108,10 +108,6 @@ public class Joueur {
             System.out.println("La case est déjà utilsée");
         }
         return plateau.plateau[y][x][0] == 0;
-        if(!(plateau.plateau[x][y][0] == 0) ){
-            System.out.println("La case est déjà utilsée");
-        }
-        return plateau.plateau[x][y][0] == 0;
     }
 
     public boolean dansLesLimitesDuPlateau(int coord) {
