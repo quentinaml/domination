@@ -82,14 +82,6 @@ public class Joueur {
 
     public boolean verifierRegles(int coordx, int coordy, int coordx2, int coordy2, int type1 , int type2) {
         if(dansLesLimitesDuPlateau(coordx) && dansLesLimitesDuPlateau(coordy) && dansLesLimitesDuPlateau(coordx2) && dansLesLimitesDuPlateau(coordy2) ) {
-            System.out.print("coordx : ");
-            System.out.println(coordx);
-            System.out.print("coordy : ");
-            System.out.println(coordy);
-            System.out.print("coordx2 : ");
-            System.out.println(coordx2);
-            System.out.print("coordy2 : ");
-            System.out.println(coordy2);
 
             if (!(coteACoteType(coordx, coordy, type1) || coteACoteType(coordx2, coordy2, type2))) {
                 System.out.println("La case a coté n'est pas du même type");
@@ -173,9 +165,13 @@ public class Joueur {
 
         for (int y = 0; y <plateau.taille-1; y++) {
             //cote gauche
+            System.out.println(coordxPlusPetit);
             for (int x = 1; x <= coordxPlusPetit; x++) {
                 if (plateau.plateau[y][coordxPlusPetit - x][0] != 0 && coordxPlusPetit - x < plusLoinGauche) {
+
                     plusLoinGauche = coordxPlusPetit - x;
+                    System.out.println(coordxPlusPetit);
+                    System.out.println(plusLoinGauche);
                 }
             }
             // coté droit x
@@ -203,7 +199,15 @@ public class Joueur {
 
             }
         }
-        boolean b = (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinHaut - plusLoinBas - 1 <= 5);
+        System.out.print("x+ : ");
+        System.out.println(plusLoinDroite);
+        System.out.print("x- : ");
+        System.out.println(plusLoinGauche);
+        System.out.print("y+ : ");
+        System.out.println(plusLoinBas);
+        System.out.print("y- : ");
+        System.out.println(plusLoinHaut);
+        boolean b = (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinBas - plusLoinHaut + 1 <= 5);
         if(!b){
             System.out.println("Taille du terrain dépasse les 5x5");
         }
