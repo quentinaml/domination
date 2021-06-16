@@ -39,8 +39,12 @@ public class Pioche {
         for (int i=0; i < nbDominosPioche; i++){
             Domino domino = (Domino) dominos.get(i);
             listeDomino.add(domino);
+        }
+        for (int i= nbDominosPioche-1 ; i >= 0 ; i--){
             dominos.remove(i);
         }
+
+
         return listeDomino;
 
     }

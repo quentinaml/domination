@@ -12,6 +12,7 @@ public class Joueur {
     private int[][] plateauCoordonnee;
     boolean regleVerifie = false;
     boolean premierTour = true;
+    boolean[][] coordoneeCheck;
 
 
     public Joueur(String name) {
@@ -199,14 +200,6 @@ public class Joueur {
 
             }
         }
-        System.out.print("x+ : ");
-        System.out.println(plusLoinDroite);
-        System.out.print("x- : ");
-        System.out.println(plusLoinGauche);
-        System.out.print("y+ : ");
-        System.out.println(plusLoinBas);
-        System.out.print("y- : ");
-        System.out.println(plusLoinHaut);
         boolean b = (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinBas - plusLoinHaut + 1 <= 5);
         if(!b){
             System.out.println("Taille du terrain dépasse les 5x5");
@@ -216,13 +209,52 @@ public class Joueur {
 
     public void compteScore(){
         //compte couronnes
-        for (Domino domino : listeDominosChoisi){
-            score += domino.getnbCouronne2();
-            score += domino.getnbCouronne();
-
+        coordoneeCheck = new boolean[plateau.taille][plateau.taille];
+        for (int i = 0; i < plateau.taille - 1; i++) {
+            for (int j = 0; j < plateau.taille - 1; j++) {
+                coordoneeCheck[i][j] = false;
+            }
         }
 
 
+        for (int i = 0; i < plateau.taille - 1; i++){
+            for (int j = 0; j < plateau.taille - 1; j++){
+                if(!coordoneeCheck[i][j]){
+                    coordoneeCheck[i][j] = true;
+                    if(plateau.plateau[i][j][0] != 0){
+                        int type = plateau.plateau[i][j][0];
+                        ArrayList<Integer> listeDominoMemeType = new ArrayList<>();
+
+                        //check + 1
+                        listeDominoMemeType.add(plateau.plateau[i][j][1]); // couronne
+                        listeDominoMemeType = checkLoop(i + 1, j , type, listeDominoMemeType);
+                        listeDominoMemeType = checkLoop(i , j + 1, type, listeDominoMemeType);
+
+                        int totalCouronnes = 0;
+                        for (Integer integer : listeDominoMemeType) {
+                            totalCouronnes += integer;
+                        }
+                        score += listeDominoMemeType.size() * totalCouronnes;
+                    }
+                }
+
+            }
+        }
+    }
+
+    public ArrayList<Integer> checkLoop (int i, int j, int type, ArrayList<Integer> listeDominoMemeType){
+        //check + ou - 1 sauf si dans listeDominoMemeType
+        if (!coordoneeCheck[i][j]) {
+            if(plateau.plateau[i][j][0] == type){
+                listeDominoMemeType.add(plateau.plateau[i][j][1]); // couronne
+                coordoneeCheck[i][j] = true;
+                listeDominoMemeType = checkLoop(i, j + 1, type, listeDominoMemeType);
+                listeDominoMemeType = checkLoop(i , j - 1 , type, listeDominoMemeType);
+                listeDominoMemeType = checkLoop(i + 1 , j, type, listeDominoMemeType);
+                listeDominoMemeType = checkLoop(i - 1, j, type, listeDominoMemeType);
+            }
+        }
+        return listeDominoMemeType;
     }
 }
 

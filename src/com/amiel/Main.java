@@ -56,7 +56,7 @@ public class Main {
 
         // autres tours
         while (!pioche.dominos.isEmpty()) {
-
+            System.out.println(pioche.dominos);
             //Piocher les dominos
             piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
 
@@ -65,9 +65,16 @@ public class Main {
             listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
 
             tour(listePassage, piocheDuTour, fenetre);
+            //comptage des scores
+            for (Joueur joueur : listeJoueurs){
+                joueur.compteScore();
+                System.out.println(joueur.score);
+            }
         }
+
+
         System.out.println("terminé");
-        //comptage des scores
+
 
     }
 
