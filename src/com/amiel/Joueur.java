@@ -104,17 +104,14 @@ public class Joueur {
     }
 
     public boolean verifierCaseNonUtilisee(int x, int y) {
-<<<<<<< Updated upstream
-        if(!(plateau.plateau[y][x] == 0) ){
+        if(!(plateau.plateau[y][x][0] == 0) ){
             System.out.println("La case est déjà utilsée");
         }
-        return plateau.plateau[y][x] == 0;
-=======
+        return plateau.plateau[y][x][0] == 0;
         if(!(plateau.plateau[x][y][0] == 0) ){
             System.out.println("La case est déjà utilsée");
         }
         return plateau.plateau[x][y][0] == 0;
->>>>>>> Stashed changes
     }
 
     public boolean dansLesLimitesDuPlateau(int coord) {
@@ -132,11 +129,8 @@ public class Joueur {
         boolean result = false;
 
         if( x != 8){
-<<<<<<< Updated upstream
-            result = (plateau.plateau[y][x+1] == typeVerifie) ;
-=======
+            result = (plateau.plateau[y][x+1][0] == typeVerifie) ;
             result = plateau.plateau[y][x+1][0] == typeVerifie;
->>>>>>> Stashed changes
 
         }
         if(y != 8 ){
@@ -162,7 +156,6 @@ public class Joueur {
         return Math.abs(coordx-coordx2) == 1 ^ Math.abs(coordy-coordy2) == 1;
     }
 
-<<<<<<< Updated upstream
     public boolean tailleMax (int coordx, int coordy, int coordx2, int coordy2){
         int coordxPlusPetit = coordx2;
         int coordxPlusGrand = coordx;
@@ -185,38 +178,15 @@ public class Joueur {
         for (int y = 0; y <plateau.taille-1; y++) {
             //cote gauche
             for (int x = 1; x <= coordxPlusPetit; x++) {
-                if (plateau.plateau[y][coordxPlusPetit - x] != 0 && coordxPlusPetit - x < plusLoinGauche) {
+                if (plateau.plateau[y][coordxPlusPetit - x][0] != 0 && coordxPlusPetit - x < plusLoinGauche) {
                     plusLoinGauche = coordxPlusPetit - x;
                 }
             }
             // coté droit x
             for (int x = coordxPlusGrand + 1; x <= plateau.taille - 1; x++ ) {
-                if (plateau.plateau[y][x] != 0 && x > plusLoinDroite) {
+                if (plateau.plateau[y][x][0] != 0 && x > plusLoinDroite) {
                     plusLoinDroite = x;
                 }
-=======
-    public boolean tailleMax (int coordx, int coordy){
-        // coté gauche x
-        int plusLoinGauche = coordx;
-        int plusLoinDroite = coordx;
-        for(var x = 1; x <= coordx; x++){
-            if(plateau.plateau[coordx-x][coordy][0] != 0 ){
-                plusLoinGauche = coordx - x;
-            }
-        }
-        // coté droit x
-        for(var x = coordx + 1; x <= plateau.taille-1; x++){
-            if(plateau.plateau[x][coordy][0] != 0 ){
-                plusLoinDroite = x;
-            }
-        }
-        // coté haut y
-        int plusLoinHaut = coordy;
-        int plusLoinBas = coordy;
-        for(var y = 1; y <= coordy; y++){
-            if(plateau.plateau[coordx][coordy-y][0] != 0 ){
-                plusLoinHaut = coordy - y;
->>>>>>> Stashed changes
             }
         }
         // calcul taille hauteur
@@ -224,23 +194,17 @@ public class Joueur {
         for (int x = 0; x < plateau.taille-1; x++) {
             // coté haut
             for (int y = 1; y <= coordyPlusPetit; y++) {
-                if (plateau.plateau[coordyPlusPetit - y][x] != 0 && coordyPlusPetit - y < plusLoinHaut) {
+                if (plateau.plateau[coordyPlusPetit - y][x][0] != 0 && coordyPlusPetit - y < plusLoinHaut) {
                     plusLoinHaut = coordyPlusPetit - y;
                 }
             }
 
-<<<<<<< Updated upstream
             //coté bas
             for (int y = coordyPlusBas; y <= plateau.taille - 1; y++) {
-                if (plateau.plateau[y][x] != 0 && y > plusLoinBas) {
+                if (plateau.plateau[y][x][0] != 0 && y > plusLoinBas) {
                     plusLoinBas = y;
                 }
-=======
-        //coté bas y
-        for(var y = coordy + 1; y <= plateau.taille-1; y++){
-            if(plateau.plateau[coordx][y][0] !=  0 ){
-                plusLoinBas = y ;
->>>>>>> Stashed changes
+
             }
         }
         boolean b = (plusLoinDroite - plusLoinGauche + 1 <= 5) && (plusLoinHaut - plusLoinBas - 1 <= 5);
