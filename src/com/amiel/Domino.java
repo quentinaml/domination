@@ -23,7 +23,7 @@ public class Domino {
     }
 
     public boolean afficheNumeroDomino(){
-        System.out.println(this.numeroDomino);
+        //System.out.println(this.numeroDomino);
         return false;
     }
 

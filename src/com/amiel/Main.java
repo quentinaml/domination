@@ -28,7 +28,7 @@ public class Main {
         Pioche pioche = new Pioche("dominos.csv");
         pioche.melangePioche();
 
-        //retire le nombre de carte en fonction du nombre de joueur
+        //retire le nombre de dominos en fonction du nombre de joueur
         if (nbJoueurs == 2) {
             for (int i = 0; i < 24; i++) {
                 pioche.dominos.remove(0);
@@ -49,111 +49,26 @@ public class Main {
         //Piocher les dominos
         ArrayList<Domino> piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
         fenetre.initAffichage();
+
         //chaque joueur choisi son premier domino
-        for (Joueur joueur : listePassage) {
-            afficheNomsDominoDansListe(piocheDuTour);
-            System.out.println(joueur.name);
-            fenetre.updateAffichage(joueur, piocheDuTour);
-            while (!fenetre.commencer) {
-                Thread.sleep(100);
-            }
-            fenetre.updateAffichage(joueur, piocheDuTour);
-            fenetre.coordx = -1;
-            fenetre.coordx2 = -1;
-            fenetre.nbClique = 0;
-
-            while (!joueur.regleVerifie) {
-                if (fenetre.defaussage) {
-                    break;
-                }
-
-                while (fenetre.nbClique != 2) {
-                    if (fenetre.defaussage) {
-                        break;
-                    }
-                    Thread.sleep(100);
-                }
-                joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-                if (!joueur.regleVerifie) {
-                    fenetre.nbClique = 0;
-                }
-            }
-            piocheDuTour = joueur.chooseDomino(piocheDuTour, fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-            joueur.regleVerifie = false;
-            fenetre.defaussage = false;
-
-            fenetre.refresh();
-
-        }
+        tour(listePassage, piocheDuTour, fenetre);
         //FIN TOUR 1
-        // autres tours
 
+        // autres tours
         while (!pioche.dominos.isEmpty()) {
+
             //Piocher les dominos
             piocheDuTour = pioche.nouvellePiocheDuTour(listeKing.size());
 
             //liste de passage des joueurs
+            //listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
             listePassage = creerListePassage(nbJoueurs, listeJoueurs, false);
-            listePassage[0] = listeJoueurs[0];
-            System.out.println(listePassage);
-            for (int i = 1; i < listeJoueurs.length; i++) {
-                int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1).getNumeroDomino();
-                listePassage[i] = listeJoueurs[i];
-                int j = i;
-                while (numeroDernierDomino < listeJoueurs[j - 1].listeDominosChoisi.get(listeJoueurs[j - 1].listeDominosChoisi.size() - 1).getNumeroDomino()) {
-                    Joueur copie = listePassage[j - 1];
-                    listePassage[j - 1] = listeJoueurs[i];
-                    listePassage[j] = copie;
-                    if (j == 1) {
-                        break;
-                    } else {
-                        j--;
-                    }
-                }
-            }
-            for (int i = 0; i < listePassage.length; i++) {
-                System.out.println(listePassage[i].name);
-            }
-            for (Joueur joueur : listePassage) {
-                afficheNomsDominoDansListe(piocheDuTour);
-                System.out.println(joueur.name);
-                fenetre.updateAffichage(joueur, piocheDuTour);
-                while (!fenetre.commencer) {
-                    Thread.sleep(100);
-                }
-                fenetre.updateAffichage(joueur, piocheDuTour);
-                fenetre.coordx = -1;
-                fenetre.coordx2 = -1;
-                fenetre.nbClique = 0;
-                while (!joueur.regleVerifie) {
-                    if (fenetre.defaussage) {
-                        break;
-                    }
-                    while (fenetre.nbClique != 2) {
-                        if (fenetre.defaussage) {
-                            break;
-                        }
-                        Thread.sleep(100);
-                    }
-                    joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-                    if (!joueur.regleVerifie) {
-                        fenetre.nbClique = 0;
-                    }
-                }
-                piocheDuTour = joueur.chooseDomino(piocheDuTour, fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
-                joueur.regleVerifie = false;
-                fenetre.defaussage = false;
-                fenetre.refresh();
 
-            }
+            tour(listePassage, piocheDuTour, fenetre);
         }
         System.out.println("terminé");
         //comptage des scores
 
-        for (Joueur joueur : listeJoueurs) {
-
-
-        }
     }
 
     private static ArrayList<Integer> generateRandomArray(int n) {
@@ -202,9 +117,55 @@ public class Main {
                 }
             }
             Collections.shuffle(asList(listePassage));
-            System.out.println("Voici l'ordre de passage :");
-            for (int i = 0; i < listePassage.length; i++){
-                System.out.println(listePassage[i].name);
+        }
+        else{
+            listePassage[0] = listeJoueurs[0];
+            if(nbJoueurs != 2) {
+                for (int i = 1; i < listeJoueurs.length; i++) {
+                    int numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 1).getNumeroDomino();
+                    listePassage[i] = listeJoueurs[i];
+                    int j = i;
+                    while (numeroDernierDomino < listePassage[j - 1].listeDominosChoisi.get(listePassage[j - 1].listeDominosChoisi.size() - 1).getNumeroDomino()) {
+                        Joueur copie = listePassage[j - 1];
+                        listePassage[j - 1] = listeJoueurs[i];
+                        listePassage[j] = copie;
+                        if (j == 1) {
+                            break;
+                        } else {
+                            j--;
+                        }
+                    }
+                }
+            }
+            else{
+                int numeroDernierDomino = listeJoueurs[1].listeDominosChoisi.get(listeJoueurs[1].listeDominosChoisi.size() - 1).getNumeroDomino();
+                listePassage[1] = listeJoueurs[1];
+                int j = 1;
+                while (numeroDernierDomino < listePassage[j - 1].listeDominosChoisi.get(listePassage[j - 1].listeDominosChoisi.size() - 1).getNumeroDomino()) {
+                    Joueur copie = listePassage[j - 1];
+                    listePassage[j - 1] = listeJoueurs[1];
+                    listePassage[j] = copie;
+                    if (j == 1) {
+                        break;
+                    } else {
+                        j--;
+                    }
+                }
+                for (int i = 0; i < 2; i++) {
+                    numeroDernierDomino = listeJoueurs[i].listeDominosChoisi.get(listeJoueurs[i].listeDominosChoisi.size() - 2).getNumeroDomino();
+                    listePassage[i + 2] = listeJoueurs[i];
+                    j = i + 2;
+                    while (numeroDernierDomino < listePassage[j - 1].listeDominosChoisi.get(listePassage[j - 1].listeDominosChoisi.size() - 2).getNumeroDomino()) {
+                        Joueur copie = listePassage[j - 1];
+                        listePassage[j - 1] = listeJoueurs[i];
+                        listePassage[j] = copie;
+                        if (j == 1) {
+                            break;
+                        } else {
+                            j--;
+                        }
+                    }
+                }
             }
         }
         return listePassage;
@@ -213,6 +174,41 @@ public class Main {
     public static void afficheNomsDominoDansListe (ArrayList<Domino> piocheDuTour){
         for (int i = 0; i < piocheDuTour.size();i++) {
             System.out.println(piocheDuTour.get(i).getNumeroDomino());
+        }
+    }
+
+    public static void tour(Joueur[] listePassage, ArrayList<Domino> piocheDuTour, Affichage fenetre) throws InterruptedException {
+        for (Joueur joueur : listePassage) {
+            //afficheNomsDominoDansListe(piocheDuTour);
+            //System.out.printprintPlateauln(joueur.name);
+            fenetre.updateAffichage(joueur, piocheDuTour);
+            while (!fenetre.commencer) {
+                Thread.sleep(100);
+            }
+            fenetre.updateAffichage(joueur, piocheDuTour);
+            fenetre.coordx = -1;
+            fenetre.coordx2 = -1;
+            fenetre.nbClique = 0;
+            while (!joueur.regleVerifie) {
+                if (fenetre.defaussage) {
+                    break;
+                }
+                while (fenetre.nbClique != 2) {
+                    if (fenetre.defaussage) {
+                        break;
+                    }
+                    Thread.sleep(100);
+                }
+                joueur.updateListePlateau(fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+                if (!joueur.regleVerifie) {
+                    fenetre.nbClique = 0;
+                }
+            }
+            piocheDuTour = joueur.chooseDomino(piocheDuTour, fenetre.dominoChoisi, fenetre.coordx, fenetre.coordy, fenetre.coordx2, fenetre.coordy2);
+            joueur.regleVerifie = false;
+            fenetre.defaussage = false;
+            fenetre.refresh();
+
         }
     }
 }

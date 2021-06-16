@@ -19,7 +19,7 @@ public class Joueur {
         this.score = 0;
         this.plateau = new Plateau(1, 9);
         this.listeDominosChoisi = new ArrayList<Domino>();
-        System.out.println(name);
+        //System.out.println(name);
     }
 
     public int getScore() {
@@ -49,25 +49,25 @@ public class Joueur {
 
     public void updateListePlateau(Domino domino, int coordx, int coordy, int coordx2, int coordy2) {
 
-        plateau.printPlateau();
-        domino.afficheDomino();
+        //plateau.printPlateau();
+        //domino.afficheDomino();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Veuillez choisir les coordonnées haut");
+        //System.out.println("Veuillez choisir les coordonnées haut");
         //coordx = scanner.nextInt();
         //coordy = scanner.nextInt();
 
 
-        System.out.println("Veuillez choisir les coordonnées bas");
+        //System.out.println("Veuillez choisir les coordonnées bas");
         //coordx2 = scanner.nextInt();
         //coordy2 = scanner.nextInt();
-        System.out.println("Défausser la carte ? O/N");
+        //System.out.println("Défausser la carte ? O/N");
         String defauce = scanner.toString();
         if(!defauce.equals("O")){
             regleVerifie = verifierRegles(coordx, coordy, coordx2, coordy2, domino.getType1(), domino.getType2());
             if(regleVerifie) {
                 plateau.plateau[coordy2][coordx2] = domino.getType2();
                 plateau.plateau[coordy][coordx] = domino.getType1();
-                plateau.printPlateau();
+                //plateau.printPlateau();
                 premierTour = false;
             }
         }
@@ -79,6 +79,15 @@ public class Joueur {
 
     public boolean verifierRegles(int coordx, int coordy, int coordx2, int coordy2, int type1 , int type2) {
         if(dansLesLimitesDuPlateau(coordx) && dansLesLimitesDuPlateau(coordy) && dansLesLimitesDuPlateau(coordx2) && dansLesLimitesDuPlateau(coordy2) ) {
+            System.out.print("coordx : ");
+            System.out.println(coordx);
+            System.out.print("coordy : ");
+            System.out.println(coordy);
+            System.out.print("coordx2 : ");
+            System.out.println(coordx2);
+            System.out.print("coordy2 : ");
+            System.out.println(coordy2);
+
             if (!(coteACoteType(coordx, coordy, type1) || coteACoteType(coordx2, coordy2, type2))) {
                 System.out.println("La case a coté n'est pas du même type");
             }else {
@@ -93,8 +102,6 @@ public class Joueur {
     }
 
     public boolean verifierCaseNonUtilisee(int x, int y) {
-        System.out.println(x);
-        System.out.println(y);
         if(!(plateau.plateau[x][y] == 0) ){
             System.out.println("La case est déjà utilsée");
         }
@@ -152,7 +159,7 @@ public class Joueur {
             }
         }
         // coté droit x
-        for(var x = coordx + 1; x >= plateau.taille-1; x++){
+        for(var x = coordx + 1; x <= plateau.taille-1; x++){
             if(plateau.plateau[x][coordy] != 0 ){
                 plusLoinDroite = x;
             }
@@ -167,7 +174,7 @@ public class Joueur {
         }
 
         //coté bas y
-        for(var y = coordy + 1; y >= plateau.taille-1; y++){
+        for(var y = coordy + 1; y <= plateau.taille-1; y++){
             if(plateau.plateau[coordx][y] !=  0 ){
                 plusLoinBas = y ;
             }

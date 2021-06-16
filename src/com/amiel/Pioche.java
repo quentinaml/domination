@@ -36,7 +36,6 @@ public class Pioche {
     public ArrayList<Domino> nouvellePiocheDuTour (int nbDominosPioche){
         melangePioche();
         ArrayList<Domino> listeDomino = new ArrayList<Domino>(nbDominosPioche);
-
         for (int i=0; i < nbDominosPioche; i++){
             Domino domino = (Domino) dominos.get(i);
             listeDomino.add(domino);
